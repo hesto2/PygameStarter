@@ -20,6 +20,8 @@ ballrect2 = masterBall.get_rect()
 ballrect2.right = width
 ballrect2.bottom = height
 
+boundary = {"width":width,"height":height}
+
 # Key config
 # ballrect.keyUp = K_w
 # ballrect.keyDown = K_s
@@ -44,7 +46,8 @@ while 1:
     screen.fill(black)
     for player in players:
 
-        speed = [0,0]
+        velocityX = 0
+        velocityY = 0
 
         top = False
         bottom = False
@@ -67,33 +70,35 @@ while 1:
             if player.name == target.name:
                 continue
 
-            collisions = player.checkCollsion(target.rect)
-            if collisions['top']:
-                top = True
-            if collisions['bottom']:
-                bottom = True
-            if collisions['left']:
-                left = True
-            if collisions['right']:
-                right = True
+            # collisions = player.checkCollsion(target.rect)
+            # if collisions['top']:
+            #     top = True
+            # if collisions['bottom']:
+            #     bottom = True
+            # if collisions['left']:
+            #     left = True
+            # if collisions['right']:
+            #     right = True
 
         # Input handling
         keys = pygame.key.get_pressed()
         if keys[player.keyUp]:
-            if top == False:
-                speed[1] = -1
+            # if top == False:
+                velocityY = -1
         if keys[player.keyDown]:
-            if bottom == False:
-                speed[1] = 1
+            # if bottom == False:
+                velocityY = 1
         if keys[player.keyLeft]:
             if left == False:
-                speed[0] = -1
+                velocityX = -1
         if keys[player.keyRight]:
-            if right == False:
-                speed[0] = 1
+            # if right == False:
+                velocityX = 1
 
+        player.velocityX = velocityX
+        player.velocityY = velocityY
         # Drawing
-        player.rect = player.rect.move(speed)
+        player.rect = player.move(players,boundary)
         screen.blit(player.image,player.rect)
 
 
