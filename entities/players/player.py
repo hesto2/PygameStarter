@@ -31,15 +31,15 @@ class Player:
         return self.rect
 
     def onCollision(self,collider,side):
-        if collider.type == 'player':
-            pass
+        if issubclass(type(collider),Player):
+            moveToEdge(self,collider,side)
 
 # Collision Detection
     def checkBoundary(self,boundary):
-        if self.rect.left + self.velocityX < 0: self.velocityX = 0
-        if self.rect.right + self.velocityX > boundary['width'] : self.velocityX = 0
-        if self.rect.top + self.velocityY < 0: self.velocityY = 0
-        if self.rect.bottom + self.velocityY > boundary['height']: self.velocityY = 0
+        if self.rect.top + self.velocityY < 0: self.velocityY = 0 - self.rect.top
+        if self.rect.bottom + self.velocityY > boundary['height']: self.velocityY = boundary['height'] - self.rect.bottom
+        if self.rect.left + self.velocityX < 0: self.velocityX = 0 - self.rect.left
+        if self.rect.right + self.velocityX > boundary['width'] : self.velocityX = boundary['width'] - self.rect.right
 
     def checkCollision(self,target):
         rect = self.rect
@@ -61,14 +61,7 @@ class Player:
 
 
     def onCollision(self,collider,side):
-        if side == SIDE_TOP:
-            collider.velocityY = 0
-        elif side == SIDE_BOTTOM:
-            collider.velocityY = 0
-        elif side == SIDE_LEFT:
-            collider.velocityX = 0
-        elif side == SIDE_RIGHT:
-            collider.velocityX = 0
+        moveToEdge(self,collider,side)
 
 # if rect.top <= target.bottom and rect.top >= target.top:
 #     if (rect.left <= target.right and rect.left >= target.left) or\

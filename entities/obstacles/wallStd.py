@@ -1,6 +1,8 @@
 from entities.obstacles.obstacle import Obstacle
+from entities.players.player import Player
 import pygame
 from constants import *
+from tools.collisions import *
 class WallStd(Obstacle):
     def __init__(self,image,position={"x":0,"y":0},passableSides=None):
         rect = image.get_rect()
@@ -14,11 +16,5 @@ class WallStd(Obstacle):
         pass
 
     def onCollision(self,collider,side):
-        if side == SIDE_TOP:
-            collider.velocityY = 0
-        elif side == SIDE_BOTTOM:
-            collider.velocityY = 0
-        elif side == SIDE_LEFT:
-            collider.velocityX = 0
-        elif side == SIDE_RIGHT:
-            collider.velocityX = 0
+        if issubclass(type(collider),Player):
+            moveToEdge(self,collider,side)

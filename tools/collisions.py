@@ -1,3 +1,4 @@
+from constants import *
 def checkTop(host,target):
     rect = host.rect
     target = target.rect
@@ -42,3 +43,13 @@ def checkRight(host,target):
             (rect.top == target.top and rect.bottom == target.bottom):
 
             return  True
+
+def moveToEdge(host,target,side):
+    if side == SIDE_TOP:
+        target.velocityY = host.rect.bottom - target.rect.top
+    elif side == SIDE_BOTTOM:
+        target.velocityY = host.rect.top - target.rect.bottom
+    elif side == SIDE_LEFT:
+        target.velocityX = host.rect.right - target.rect.left
+    elif side == SIDE_RIGHT:
+        target.velocityX = host.rect.left - target.rect.right
