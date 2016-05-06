@@ -1,23 +1,26 @@
 from constants import *
 from tools.collisions import *
+from pygame.locals import *
+import pygame
 class Player:
     top = False
     bottom = False
     left = False
     right = False
 
-    def __init__(self,rect,keyUp,keyDown,keyLeft,keyRight,image,name):
+    def __init__(self,rect,inputConf,image,name):
         self.rect = rect
-        self.keyUp = keyUp
-        self.keyDown = keyDown
-        self.keyLeft = keyLeft
-        self.keyRight = keyRight
+        self.keyUp = inputConf['keyUp']
+        self.keyDown = inputConf['keyDown']
+        self.keyLeft = inputConf['keyLeft']
+        self.keyRight = inputConf['keyRight']
         self.image = image
         self.name = name
         self.velocityX = 0
         self.velocityY = 0
         self.directionX = 1
         self.directionY = 1
+        self.maxSpeed = 5
 
 
     def move(self,entities,boundary):
@@ -62,6 +65,24 @@ class Player:
 
     def onCollision(self,collider,side):
         moveToEdge(self,collider,side)
+
+    def handleInput(self):
+        keys = pygame.key.get_pressed()
+        if keys[player.keyUp]:
+                directionY = -1
+        if keys[player.keyDown]:
+                directionY = 1
+        if keys[player.keyLeft]:
+                directionX = -1
+        if keys[player.keyRight]:
+                directionX = 1
+
+
+
+    def tick(self):
+        handleInput(self)
+        handleState(self)
+        move(self)
 
 # if rect.top <= target.bottom and rect.top >= target.top:
 #     if (rect.left <= target.right and rect.left >= target.left) or\

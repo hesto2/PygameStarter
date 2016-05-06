@@ -31,9 +31,20 @@ ballrect2.bottom = height
 
 boundary = {"width":width,"height":height}
 
-
-player1 = Player(ballrect,K_w,K_s,K_a,K_d,ball,'billums123')
-player2 = Player(ballrect2,K_UP,K_DOWN,K_LEFT,K_RIGHT,masterBall,'hesto2')
+p1Input = {
+    "keyUp":K_w,
+    "keyDown":K_s,
+    "keyLeft":K_a,
+    "keyRight":K_d,
+}
+p2Input = {
+    "keyUp":K_UP,
+    "keyDown":K_DOWN,
+    "keyLeft":K_LEFT,
+    "keyRight":K_RIGHT,
+}
+player1 = Player(ballrect,p1Input,ball,'billums123')
+player2 = Player(ballrect2,p2Input,masterBall,'hesto2')
 players = [player1,player2]
 
 
