@@ -3,6 +3,7 @@ from entities.players.player import Player
 from pygame.locals import *
 from entities.obstacles.wallStd import WallStd
 
+print('Starting Game')
 pygame.init()
 width = 700
 height = 500
@@ -52,34 +53,18 @@ entities = []
 for player in players:
     entities.append(player)
 for obstacle in obstacles:
-    print(obstacle.rect.x)
-    print(obstacle.rect.y)
     entities.append(obstacle)
 
+clock = pygame.time.Clock()
+print('Game Initialized')
+print('Starting Game Loop')
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
     screen.fill(black)
     for player in players:
-        velocityY = 0
-        velocityX = 0
-
-        # Input handling
-        keys = pygame.key.get_pressed()
-        if keys[player.keyUp]:
-                velocityY = -1
-        if keys[player.keyDown]:
-                velocityY = 1
-        if keys[player.keyLeft]:
-                velocityX = -1
-        if keys[player.keyRight]:
-                velocityX = 1
-
-        player.velocityX = velocityX
-        player.velocityY = velocityY
-        # Drawing
-        player.rect = player.move(entities,boundary)
+        player.tick(entities,boundary)
 
 
 
@@ -91,4 +76,4 @@ while 1:
         screen.blit(entity.image,entity.rect)
 
     pygame.display.flip()
-    time.sleep(.003)
+    clock.tick(60)

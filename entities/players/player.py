@@ -20,7 +20,10 @@ class Player:
         self.velocityY = 0
         self.directionX = 1
         self.directionY = 1
-        self.maxSpeed = 5
+        self.maxXSpeed = 5
+        self.currentXSpeed = 0
+        self.maxYSpeed = 5
+        self.currentYSpeed = 0
 
 
     def move(self,entities,boundary):
@@ -68,35 +71,27 @@ class Player:
 
     def handleInput(self):
         keys = pygame.key.get_pressed()
-        if keys[player.keyUp]:
-                directionY = -1
-        if keys[player.keyDown]:
-                directionY = 1
-        if keys[player.keyLeft]:
-                directionX = -1
-        if keys[player.keyRight]:
-                directionX = 1
+        self.currentXSpeed = 0
+        self.currentYSpeed = 0
+        if keys[self.keyUp]:
+                self.directionY = -1
+                self.currentYSpeed = self.maxYSpeed
+        if keys[self.keyDown]:
+                self.directionY = 1
+                self.currentYSpeed = self.maxYSpeed
+        if keys[self.keyLeft]:
+                self.directionX = -1
+                self.currentXSpeed = self.maxXSpeed
+        if keys[self.keyRight]:
+                self.directionX = 1
+                self.currentXSpeed = self.maxXSpeed
 
+    def handleState(self):
+        self.velocityX = self.currentXSpeed * self.directionX
+        self.velocityY = self.currentYSpeed * self.directionY
 
-
-    def tick(self):
-        handleInput(self)
-        handleState(self)
-        move(self)
-
-# if rect.top <= target.bottom and rect.top >= target.top:
-#     if (rect.left <= target.right and rect.left >= target.left) or\
-#         (rect.right >= target.left and rect.right <= target.right):
-#         top = True
-# if rect.bottom > target.top and rect.bottom < target.bottom:
-#     if (rect.left <= target.right and rect.left >= target.left) or\
-#         (rect.right >= target.left and rect.right <= target.right):
-#         bottom = True
-# if rect.left < target.right and rect.left > target.left:
-#     if (rect.bottom >= target.top and rect.bottom <= target.bottom) or\
-#         rect.top <= target.bottom and rect.top >= target.top:
-#         left = True
-# if rect.right > target.left and rect.right < target.right:
-#     if (rect.bottom >= target.top and rect.bottom <= target.bottom) or\
-#         rect.top <= target.bottom and rect.top >= target.top:
-#         right = True
+    def tick(self,entities,boundary):
+        self.handleInput()
+        self.handleState()
+        self.move(entities,boundary)
+        return self.rect
