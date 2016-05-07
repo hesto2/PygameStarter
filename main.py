@@ -2,7 +2,7 @@ import sys, pygame, time
 from entities.players.player import Player
 from pygame.locals import *
 from entities.obstacles.wallStd import WallStd
-
+from constants import *
 print('Starting Game')
 pygame.init()
 width = 700
@@ -14,9 +14,9 @@ screen = pygame.display.set_mode(size)
 
 obstacles = []
 wallImg = pygame.image.load('lib/obstacles/wall.jpg')
-obstacles.append(WallStd(wallImg,{'x':50,'y':200}))
-obstacles.append(WallStd(wallImg,{'x':550,'y':50}))
-obstacles.append(WallStd(wallImg,{'x':300,'y':150}))
+obstacles.append(WallStd(wallImg,{'x':50,'y':200},moveableSides=[SIDE_RIGHT,SIDE_TOP,SIDE_LEFT,SIDE_BOTTOM]))
+obstacles.append(WallStd(wallImg,{'x':550,'y':50},moveableSides=[SIDE_RIGHT,SIDE_TOP,SIDE_LEFT,SIDE_BOTTOM]))
+obstacles.append(WallStd(wallImg,{'x':300,'y':150},))
 obstacles.append(WallStd(wallImg,{'x':150,'y':350}))
 obstacles.append(WallStd(wallImg,{'x':350,'y':350}))
 
@@ -76,4 +76,4 @@ while 1:
         screen.blit(entity.image,entity.rect)
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(55)
