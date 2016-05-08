@@ -34,7 +34,7 @@ class WallStd(Obstacle):
             self.velocityY = 0
             if side == SIDE_TOP:
                 collider.velocityY = collider.velocityY + self.mass
-                if colliser.velocityY > 0:
+                if collider.velocityY > 0:
                     collider.velocityY = 0
                 self.velocityY = collider.velocityY
             elif side == SIDE_BOTTOM:
