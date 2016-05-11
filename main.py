@@ -5,8 +5,8 @@ from entities.obstacles.wallStd import WallStd
 from constants import *
 print('Starting Game')
 pygame.init()
-width = 700
-height = 500
+width = 1200
+height = 800
 size = [width,height]
 black = 0,0,255
 
@@ -14,7 +14,7 @@ screen = pygame.display.set_mode(size)
 
 obstacles = []
 wallImg = pygame.image.load('lib/obstacles/wall.jpg')
-obstacles.append(WallStd(wallImg,{'x':50,'y':200},moveableSides=[SIDE_RIGHT,SIDE_TOP,SIDE_LEFT,SIDE_BOTTOM]))
+obstacles.append(WallStd(wallImg,{'x':50,'y':200},moveableSides=[SIDE_RIGHT]))
 obstacles.append(WallStd(wallImg,{'x':550,'y':50},moveableSides=[SIDE_RIGHT,SIDE_TOP,SIDE_LEFT,SIDE_BOTTOM]))
 obstacles.append(WallStd(wallImg,{'x':300,'y':150},))
 obstacles.append(WallStd(wallImg,{'x':150,'y':350}))
