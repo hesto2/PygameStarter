@@ -1,5 +1,6 @@
 import pygame,time
 from displays.display import Display
+from displays.menus.startMenu import StartMenu
 class GameMaster:
     # Initial Setup of game/screen etc.
     def __init__(self):
@@ -9,7 +10,7 @@ class GameMaster:
         self.CLOCK = pygame.time.Clock()
         self.SCREEN = pygame.display.set_mode(size)
         entities = []
-        self.display =  Display(self.SCREEN,entities,(0,0,255))
+        self.display =  None
 
 
     def run(self):

@@ -8,5 +8,5 @@ class Display:
     def draw(self):
         self.screen.fill(self.bg_color)
         for entity in self.entities:
-            screen.blit(entity.image,entity.rect)
+            self.screen.blit(entity.image,entity.rect)
         pygame.display.flip()
