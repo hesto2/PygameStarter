@@ -3,6 +3,8 @@ from entities.players.player import Player
 from pygame.locals import *
 from entities.obstacles.wallStd import WallStd
 from constants import *
+from displays.display import Display
+from gameMaster import GameMaster
 print('Starting Game')
 pygame.init()
 width = 1200
@@ -55,25 +57,8 @@ for player in players:
 for obstacle in obstacles:
     entities.append(obstacle)
 
-clock = pygame.time.Clock()
+
+GAME = GameMaster()
 print('Game Initialized')
 print('Starting Game Loop')
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
-
-    screen.fill(black)
-    for player in players:
-        player.tick(entities,boundary)
-
-
-
-    position = 'Top: %i, Bottom: %i, Left: %i, Right: %i' % (ballrect.top,ballrect.bottom,ballrect.left,ballrect.right)
-    # print(position)
-    # for o in obstacles:
-    #     obstascle.tick()
-    for entity in entities:
-        screen.blit(entity.image,entity.rect)
-
-    pygame.display.flip()
-    clock.tick(55)
+GAME.run()
