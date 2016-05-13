@@ -1,32 +1,33 @@
 from constants import *
-import constants as c
+import constants as C
 from tools.collisions import *
 from pygame.locals import *
+from entities.entity import Entity
 import pygame
-class Player:
+class Player(Entity):
     top = False
     bottom = False
     left = False
     right = False
 
-    def __init__(self,rect,inputConf,image,name):
-        self.rect = rect
+    def __init__(self,rect,inputConf,image,boundary,name):
         self.keyUp = inputConf['keyUp']
         self.keyDown = inputConf['keyDown']
         self.keyLeft = inputConf['keyLeft']
         self.keyRight = inputConf['keyRight']
-        self.type = TYPE_PLAYER
-        self.image = image
+        self.type = C.TYPE_PLAYER
         self.name = name
         self.velocityX = 0
         self.velocityY = 0
         self.directionX = 1
         self.directionY = 1
-        self.maxXSpeed = 5
+        self.maxXSpeed = 10
         self.currentXSpeed = 0
-        self.maxYSpeed = 5
+        self.maxYSpeed = 8
         self.currentYSpeed = 0
-        self.id = self.getGuid()
+        self.boundary = boundary
+
+        super().__init__(rect,image)
 
 
     def move(self,entities,boundary):
@@ -51,10 +52,10 @@ class Player:
         # if self.checkTop(target) or self.checkBottom(target): self.velocityY = 0
         # if self.checkLeft(target) or self.checkRight(target): self.velocityX = 0
 
-        if checkTop(self,target): target.onCollision(self,SIDE_TOP,entities,boundary)
-        elif checkBottom(self,target): target.onCollision(self,SIDE_BOTTOM,entities,boundary)
-        elif checkLeft(self,target): target.onCollision(self,SIDE_LEFT,entities,boundary)
-        elif checkRight(self,target): target.onCollision(self,SIDE_RIGHT,entities,boundary)
+        if checkTop(self,target): target.onCollision(self,C.SIDE_TOP,entities,boundary)
+        elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM,entities,boundary)
+        elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT,entities,boundary)
+        elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT,entities,boundary)
 
         # top = self.checkTop(target)
         # bottom =  self.checkBottom(target)
@@ -89,12 +90,8 @@ class Player:
         self.velocityX = self.currentXSpeed * self.directionX
         self.velocityY = self.currentYSpeed * self.directionY
 
-    def tick(self,entities,boundary):
+    def tick(self):
         self.handleInput()
         self.handleState()
-        self.move(entities,boundary)
+        self.move(C.GAME.display.entities,self.boundary)
         return self.rect
-
-    def getGuid(self):
-        self.id = c.GUID
-        c.GUID = c.GUID + 1

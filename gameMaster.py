@@ -1,6 +1,7 @@
-import pygame,time
+import pygame,time,sys
 from displays.display import Display
 from displays.menus.startMenu import StartMenu
+import conf
 class GameMaster:
     # Initial Setup of game/screen etc.
     def __init__(self):
@@ -18,6 +19,8 @@ class GameMaster:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
 
+            for entity in self.display.entities:
+                entity.tick()
 
             self.display.draw()
-            self.CLOCK.tick(55)
+            self.CLOCK.tick(conf.FPS)

@@ -1,7 +1,7 @@
 from entities.obstacles.obstacle import Obstacle
 from entities.players.player import Player
 import pygame
-from constants import *
+import constants as C
 from tools.collisions import *
 # from main import entities
 '''
@@ -15,7 +15,7 @@ class WallStd(Obstacle):
     def __init__(self,image,position={"x":0,"y":0},passableSides=None,moveableSides=None):
         rect = image.get_rect()
         Obstacle.__init__(self,rect,image)
-        self.type = TYPE_WALLSTD
+        self.type = C.TYPE_WALLSTD
         self.rect.left = position['x']
         self.rect.top = position['y']
         self.moveableSides = moveableSides
@@ -32,22 +32,22 @@ class WallStd(Obstacle):
         if self.moveableSides != None and side in self.moveableSides:
             self.velocityX = 0
             self.velocityY = 0
-            if side == SIDE_TOP:
+            if side == C.SIDE_TOP:
                 collider.velocityY = collider.velocityY + self.mass
                 if collider.velocityY > 0:
                     collider.velocityY = 0
                 self.velocityY = collider.velocityY
-            elif side == SIDE_BOTTOM:
+            elif side == C.SIDE_BOTTOM:
                 collider.velocityY = collider.velocityY - self.mass
                 if collider.velocityY < 0:
                     collider.velocityY = 0
                 self.velocityY = collider.velocityY
-            elif side == SIDE_LEFT:
+            elif side == C.SIDE_LEFT:
                 collider.velocityX = collider.velocityX + self.mass
                 if collider.velocityX > 0:
                     collider.velocityX = 0
                 self.velocityX = collider.velocityX
-            elif side == SIDE_RIGHT:
+            elif side == C.SIDE_RIGHT:
                 collider.velocityX = collider.velocityX - self.mass
                 if collider.velocityX < 0:
                     collider.velocityX = 0
@@ -61,10 +61,10 @@ class WallStd(Obstacle):
 
     def checkCollision(self,target,entities,boundary):
         rect = self.rect
-        if checkTop(self,target): target.onCollision(self,SIDE_TOP,entities,boundary)
-        elif checkBottom(self,target): target.onCollision(self,SIDE_BOTTOM,entities,boundary)
-        elif checkLeft(self,target): target.onCollision(self,SIDE_LEFT,entities,boundary)
-        elif checkRight(self,target): target.onCollision(self,SIDE_RIGHT,entities,boundary)
+        if checkTop(self,target): target.onCollision(self,C.SIDE_TOP,entities,boundary)
+        elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM,entities,boundary)
+        elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT,entities,boundary)
+        elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT,entities,boundary)
 
     def move(self,entities,boundary,collider,side):
         for target in entities:
@@ -75,7 +75,7 @@ class WallStd(Obstacle):
 
         self.rect = self.rect.move(self.velocityX,self.velocityY)
 
-        if side in [SIDE_TOP,SIDE_BOTTOM]:
+        if side in [C.SIDE_TOP,C.SIDE_BOTTOM]:
             collider.velocityY = self.velocityY
         else:
             collider.velocityX = self.velocityX
