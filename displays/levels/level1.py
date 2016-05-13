@@ -1,22 +1,19 @@
-from displays.display import Display
+from displays.levels.level import Level, LevelComponent
 from entities.entity import Entity
 from entities.obstacles.wallStd import WallStd
 from entities.players.player import Player
 from pygame.locals import *
 import constants as C
 import pygame
-class SandBox(Display):
-    subEntities = []
-    entities = []
-    playArea = {}
-    testLevel = None
+class Level1(Level):
+
     def __init__(self):
         self.test1Level()
-        super().__init__(C.GAME.SCREEN,self.entities)
+        super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities)
 
     def test1Level(self):
         self.testLevel = 1
-        screenRect = C.GAME.SCREEN.get_rect()
+        screenRect = self.playArea.rect
         obstacles = []
         wallImg = pygame.image.load('lib/obstacles/wall.jpg').convert()
         obstacles.append(WallStd(wallImg,{'x':50,'y':200},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
@@ -32,10 +29,8 @@ class SandBox(Display):
         ballrect = ball.get_rect()
 
         ballrect2 = masterBall.get_rect()
-        ballrect2.right = screenRect.width
-        ballrect2.bottom = screenRect.height
-
-        boundary = {"width":screenRect.width,"height":screenRect.height}
+        ballrect2.right = 300
+        ballrect2.bottom = 500
 
         p1Input = {
             "keyUp":K_w,
@@ -49,14 +44,16 @@ class SandBox(Display):
             "keyLeft":K_LEFT,
             "keyRight":K_RIGHT,
         }
-        player1 = Player(ballrect,p1Input,ball,boundary,'billums123')
-        player2 = Player(ballrect2,p2Input,masterBall,boundary,'hesto2')
+        player1 = Player(ballrect,p1Input,ball,'billums123')
+        player2 = Player(ballrect2,p2Input,masterBall,'hesto2')
         players = [player1,player2]
-
+        self.playAreaEntities = []
+        self.hudEntities = []
         for player in players:
-            self.entities.append(player)
+            self.playAreaEntities.append(player)
         for obstacle in obstacles:
-            self.entities.append(obstacle)
+            self.playAreaEntities.append(obstacle)
+
 
     def test2Level(self):
         self.testLevel = 2

@@ -10,3 +10,7 @@ class Display:
         for entity in self.entities:
             self.screen.blit(entity.image,entity.rect)
         pygame.display.flip()
+
+    def tick(self):
+        for entity in self.entities:
+            entity.tick()

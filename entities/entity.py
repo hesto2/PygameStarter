@@ -1,4 +1,4 @@
-import constants as c
+import constants as C
 import pygame
 class Entity:
 
@@ -10,12 +10,12 @@ class Entity:
         self.rightMouseDown = False
         self.id = self.getGuid()
 
-    def onCollision(self,collider,side):
+    def onCollision(self,collider,side,boundary=None,flags=None):
         pass
 
     def getGuid(self):
-        self.id = c.GUID
-        c.GUID = c.GUID + 1
+        self.id = C.GUID
+        C.GUID = C.GUID + 1
 
     def onLeftMouseDown(self):
         pass
@@ -42,3 +42,10 @@ class Entity:
                 self.onLeftMouseDown()
             if pygame.mouse.get_pressed()[2]:
                 self.onRightMouseDown()
+
+    def checkBoundary(self):
+        playArea = C.GAME.display.playArea.rect
+        if self.rect.top + self.velocityY < 0: self.velocityY = 0 - self.rect.top
+        if self.rect.bottom + self.velocityY > playArea.height: self.velocityY = playArea.height - self.rect.bottom
+        if self.rect.left + self.velocityX < 0: self.velocityX = 0 - self.rect.left
+        if self.rect.right + self.velocityX > playArea.width : self.velocityX = playArea.width - self.rect.right

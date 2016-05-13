@@ -27,7 +27,7 @@ class WallStd(Obstacle):
     def tick(self):
         pass
 
-    def onCollision(self,collider,side,entities,boundary):
+    def onCollision(self,collider,side):
         # if issubclass(type(collider),Player):
         if self.moveableSides != None and side in self.moveableSides:
             self.velocityX = 0
@@ -53,25 +53,26 @@ class WallStd(Obstacle):
                     collider.velocityX = 0
                 self.velocityX = collider.velocityX
 
-            self.rect = self.move(entities,boundary,collider,side)
+            self.rect = self.move(collider,side)
         else:
             moveToEdge(self,collider,side)
 
 
 
-    def checkCollision(self,target,entities,boundary):
+    def checkCollision(self,target):
         rect = self.rect
-        if checkTop(self,target): target.onCollision(self,C.SIDE_TOP,entities,boundary)
-        elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM,entities,boundary)
-        elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT,entities,boundary)
-        elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT,entities,boundary)
+        if checkTop(self,target): target.onCollision(self,C.SIDE_TOP)
+        elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM)
+        elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT)
+        elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT)
 
-    def move(self,entities,boundary,collider,side):
+    def move(self,collider,side):
+        entities = C.GAME.display.playArea.entities
         for target in entities:
             if target == self or target == collider:
                 continue
-            self.checkCollision(target,entities,boundary)
-            self.checkBoundary(boundary)
+            self.checkCollision(target)
+            self.checkBoundary()
 
         self.rect = self.rect.move(self.velocityX,self.velocityY)
 
@@ -80,9 +81,3 @@ class WallStd(Obstacle):
         else:
             collider.velocityX = self.velocityX
         return self.rect
-
-    def checkBoundary(self,boundary):
-        if self.rect.top + self.velocityY < 0: self.velocityY = 0 - self.rect.top
-        if self.rect.bottom + self.velocityY > boundary['height']: self.velocityY = boundary['height'] - self.rect.bottom
-        if self.rect.left + self.velocityX < 0: self.velocityX = 0 - self.rect.left
-        if self.rect.right + self.velocityX > boundary['width'] : self.velocityX = boundary['width'] - self.rect.right

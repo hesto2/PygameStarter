@@ -5,6 +5,7 @@ import constants as C
 from displays.display import Display
 from displays.menus.startMenu import StartMenu
 from displays.levels.sandbox import SandBox
+from displays.levels.level1 import Level1
 from gameMaster import GameMaster
 print('Starting Game')
 
@@ -15,7 +16,7 @@ black = 0,0,255
 
 screen = pygame.display.set_mode(size)
 C.GAME = GameMaster()
-C.GAME.display = StartMenu()
+C.GAME.display = Level1()
 print('Game Initialized')
 print('Starting Game Loop')
 C.GAME.run()

@@ -1,4 +1,3 @@
-from gameMaster import GameMaster
 GUID = 0
 SIDE_TOP = 'top'
 SIDE_BOTTOM = 'bottom'
@@ -7,3 +6,5 @@ SIDE_RIGHT = 'right'
 TYPE_PLAYER = 'player'
 TYPE_WALLSTD = 'WallStd'
 GAME = None
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 800
