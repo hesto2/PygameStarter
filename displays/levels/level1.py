@@ -21,36 +21,8 @@ class Level1(Level):
         obstacles.append(WallStd(wallImg,{'x':300,'y':150},))
         obstacles.append(WallStd(wallImg,{'x':150,'y':350}))
         obstacles.append(WallStd(wallImg,{'x':350,'y':350}))
-
-
-        ball = pygame.image.load('ball.png')
-        masterBall = pygame.image.load('masterBall.png')
-
-        ballrect = ball.get_rect()
-
-        ballrect2 = masterBall.get_rect()
-        ballrect2.right = 300
-        ballrect2.bottom = 500
-
-        p1Input = {
-            "keyUp":K_w,
-            "keyDown":K_s,
-            "keyLeft":K_a,
-            "keyRight":K_d,
-        }
-        p2Input = {
-            "keyUp":K_UP,
-            "keyDown":K_DOWN,
-            "keyLeft":K_LEFT,
-            "keyRight":K_RIGHT,
-        }
-        player1 = Player(ballrect,p1Input,ball,'billums123')
-        player2 = Player(ballrect2,p2Input,masterBall,'hesto2')
-        players = [player1,player2]
         self.playAreaEntities = []
         self.hudEntities = []
-        for player in players:
-            self.playAreaEntities.append(player)
         for obstacle in obstacles:
             self.playAreaEntities.append(obstacle)
 
