@@ -5,10 +5,10 @@ from pygame.locals import *
 from entities.entity import Entity
 import pygame
 class Player(Entity):
-    top = False
-    bottom = False
-    left = False
-    right = False
+    # top = False
+    # bottom = False
+    # left = False
+    # right = False
 
     def __init__(self,rect,inputConf,image,name):
         self.keyUp = inputConf['keyUp']

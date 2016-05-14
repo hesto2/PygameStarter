@@ -1,4 +1,4 @@
-from displays.levels.sandbox import SandBox
+from displays.levels.level1 import Level1
 from entities.entity import Entity
 import constants as C
 import pygame
@@ -16,4 +16,4 @@ class PlayButton(Button):
         pass
 
     def onLeftMouseDown(self):
-        C.GAME.display = SandBox()
+        C.GAME.display = Level1()

@@ -4,7 +4,7 @@ class Entity:
 
     def __init__(self,rect,image):
         self.rect = rect
-        self.image = image
+        self.image = image.convert()
         self.mouseHover = False
         self.leftMouseDown = False
         self.rightMouseDown = False
