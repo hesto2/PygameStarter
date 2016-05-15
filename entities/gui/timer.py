@@ -2,6 +2,7 @@ from entities.entity import Entity
 import constants as C
 import pygame
 import math
+from tools.time import getSecondsElapsed
 class Timer(Entity):
     font = pygame.font.Font(None, 36)
 
@@ -23,7 +24,6 @@ class Timer(Entity):
             seconds = countdown - timeElapsed
             color = C.RED
             if seconds <= 0:
-                print(123)
                 C.GAME.display.state = C.STATE_IN_PROGRESS
                 C.GAME.display.start_time = current_time
                 color = C.BLACK
@@ -42,11 +42,11 @@ class Timer(Entity):
                 if timeLeft <= 0:
                     C.GAME.display.state = C.STATE_FINISHED
 
+            #Handle players being tagged
+            incrementTaggedPlayerTime()
+
         time = '%i:%02d' % (minutes,seconds)
         self.image = self.font.render(time,1,color)
 
-def getSecondsElapsed(current,start):
-    elapsed = current - start
-    elapsed = elapsed/1000
-    elapsed = math.modf(elapsed)
-    return elapsed[1]
+def incrementTaggedPlayerTime():
+    C.GAME.display.taggedPlayer.time_tagged +=1

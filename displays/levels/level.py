@@ -2,6 +2,7 @@ from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
 import constants as C
+import random
 import pygame
 
 class LevelComponent():
@@ -17,32 +18,33 @@ class Level(Display):
     paused = False
     started = False
     state = C.STATE_PRE_START
-    time_limit = 20 #In seconds
+    time_limit = 90 #In seconds
     start_time = None
-    start_countdown = 5
+    start_countdown = 0
+    taggedPlayer = None
+    players = []
+
     def __init__(self,screen,playAreaEntities,hudEntities):
         self.playArea.entities = playAreaEntities
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
-        # self.start_time = pygame.time.get_ticks()
 
+        # Select Tagged Player
+        self.taggedPlayer = random.choice(self.players)
+        self.taggedPlayer.tagged()
 
         # Hud Items
         # Timer
         timerBox = LevelComponent((200,50),color=(255,255,255))
         timerBox.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         timer = Timer()
-        # # timer.rect.width = timerBox.rect.width
-        # # timer.rect.height = timerBox.rect.height
-        print(timerBox.rect.width)
+
         timer.rect.centerx = timerBox.rect.width/2
         timer.rect.centery = timerBox.rect.centery
         timerBox.entities.append(timer)
+        self.players[1].rect.right = self.playArea.rect.width
+        self.players[1].rect.bottom = self.playArea.rect.height
 
-        # font = pygame.font.Font(None, 36)
-        # test = LevelComponent()
-        # test.surface = font.render('TEST',1,(0,255,0))
-        # test.rect = test.surface.get_rect()
 
 
         self.hud.extend([timerBox])
