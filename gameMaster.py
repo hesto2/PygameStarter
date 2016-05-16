@@ -29,14 +29,9 @@ class GameMaster:
 
     def handleState(self):
         if self.state == C.STATE_CHANGE:
-            # self.display = self.nextDisplay
-            # self.nextDisplay = None
-            self.display = Display(C.GAME.SCREEN,[])
-            self.state = C.STATE_CHANGED
-            self.stateContinue = True
-        if self.state == C.STATE_CHANGED:
-            self.state == C.STATE_IN_PROGRESS
             self.display = self.nextDisplay
+            self.nextDisplay = None
+            self.state = C.STATE_IN_PROGRESS
 
     def changeDisplay(self,display):
         self.state = C.STATE_CHANGE
