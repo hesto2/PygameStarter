@@ -1,6 +1,8 @@
 from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
+
+
 import constants as C
 import random
 import pygame
@@ -11,6 +13,8 @@ class LevelComponent():
         self.rect = self.surface.get_rect()
         self.entities = entities
         self.bg_color = color
+    def tick(self):
+        pass
 
 class Level(Display):
     playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
@@ -18,7 +22,7 @@ class Level(Display):
     paused = False
     started = False
     state = C.STATE_PRE_START
-    time_limit = 90 #In seconds
+    time_limit = 3 #In seconds
     start_time = None
     start_countdown = 0
     taggedPlayer = None
@@ -57,7 +61,11 @@ class Level(Display):
         if self.state == C.STATE_IN_PROGRESS:
             for entity in self.playArea.entities:
                 entity.tick()
+        if self.state == C.STATE_FINISHED:
+            self.endRound()
+
         for entity in self.hud:
+            entity.tick()
             for subEntity in entity.entities:
                 subEntity.tick()
 
@@ -77,3 +85,12 @@ class Level(Display):
         self.entities = [playArea]
         self.entities.extend(hudItems)
         super().draw()
+
+    def endRound(self):
+        from entities.gui import overlays
+        from displays.menus.endRound import EndRoundMenu
+        screen = C.GAME.SCREEN.get_rect()
+        overlay = overlays.black()
+        self.hud.append(overlay)
+        # self.hud.append(EndRoundMenu())
+        self.state = C.STATE_END_ROUND

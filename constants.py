@@ -16,3 +16,4 @@ WHITE = (255,255,255)
 STATE_PRE_START = 'pre_start'
 STATE_IN_PROGRESS = 'in_progress'
 STATE_FINISHED = 'finished'
+STATE_END_ROUND = 'end_round'
