@@ -19,13 +19,14 @@ class Timer(Entity):
         minutes = 0
         seconds = 0
         if C.GAME.display.state == C.STATE_PRE_START:
+            current_time -= C.GAME.display.start_time
             countdown = C.GAME.display.start_countdown
             timeElapsed = getSecondsElapsed(current_time,countdown)
             seconds = countdown - timeElapsed
             color = C.RED
             if seconds <= 0:
                 C.GAME.display.state = C.STATE_IN_PROGRESS
-                C.GAME.display.start_time = current_time
+                C.GAME.display.start_time = pygame.time.get_ticks()
                 color = C.BLACK
 
         if C.GAME.display.state == C.STATE_IN_PROGRESS:

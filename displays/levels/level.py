@@ -53,6 +53,8 @@ class Level(Display):
 
 
         self.hud.extend([timerBox])
+
+        self.start_time = pygame.time.get_ticks()
         super().__init__(screen,[])
 
     def togglePause(self):
