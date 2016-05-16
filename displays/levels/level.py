@@ -22,13 +22,14 @@ class Level(Display):
     paused = False
     started = False
     state = C.STATE_PRE_START
-    time_limit = 3 #In seconds
+    time_limit = 10 #In seconds
     start_time = None
-    start_countdown = 0
+    start_countdown = 3
     taggedPlayer = None
     players = []
 
     def __init__(self,screen,playAreaEntities,hudEntities):
+
         self.playArea.entities = playAreaEntities
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
@@ -76,21 +77,30 @@ class Level(Display):
         playArea = Entity(self.playArea.rect,self.playArea.surface)
 
         hudItems = []
-        for entity in self.hud:
-            entity.surface.fill(entity.bg_color)
-            for subEntity in entity.entities:
-                entity.surface.blit(subEntity.image,subEntity.rect)
-            hudItems.append(Entity(entity.rect,entity.surface))
+
+        for hudEntity in self.hud:
+            hudEntity.surface.fill(hudEntity.bg_color)
+            for subEntity in hudEntity.entities:
+                hudEntity.surface.blit(subEntity.image,subEntity.rect)
+            hudItems.append(Entity(hudEntity.rect,hudEntity.surface))
 
         self.entities = [playArea]
         self.entities.extend(hudItems)
         super().draw()
 
     def endRound(self):
-        from entities.gui import overlays
+        from entities.gui import overlays,buttons
         from displays.menus.endRound import EndRoundMenu
         screen = C.GAME.SCREEN.get_rect()
         overlay = overlays.black()
         self.hud.append(overlay)
-        # self.hud.append(EndRoundMenu())
+        self.hud.append(EndRoundMenu())
         self.state = C.STATE_END_ROUND
+
+    def reset(self):
+        self.playArea.entities = []
+        self.hud = []
+        self.state = C.STATE_PRE_START
+        self.paused = False
+        self.started = False
+        self.taggedPlayer = None

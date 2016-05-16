@@ -8,10 +8,20 @@ class EndRoundMenu(LevelComponent):
     fadeSpeed = 5
     def __init__(self):
         screen = C.GAME.SCREEN.get_rect()
-        super().__init__((screen.width,screen.height))
-        self.surface.set_alpha(0)
 
+        # Buttons
+        playAgain = buttons.PlayAgainButton()
+        super().__init__((screen.width*.4,screen.height*.4),entities=[])
+
+        self.rect.centerx = screen.centerx
+        self.rect.centery = screen.centery
+
+        playAgain.rect.centerx = self.rect.width *.5
+        playAgain.rect.centery = self.rect.height *.5
+        playAgain.abs_pos = (self.rect.x+playAgain.rect.x,
+                             self.rect.y+playAgain.rect.y)
+        self.entities.append(playAgain)
 
     def tick(self):
-        if self.surface.get_alpha() < 200:
-            self.surface.set_alpha(self.surface.get_alpha() + 10)
+        # align items
+        pass

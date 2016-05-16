@@ -12,6 +12,9 @@ class GameMaster:
         self.SCREEN = pygame.display.set_mode(size)
         entities = []
         self.display =  None
+        self.state = C.STATE_IN_PROGRESS
+        self.nextDisplay = None
+        self.stateContinue = False
 
 
     def run(self):
@@ -19,6 +22,22 @@ class GameMaster:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
 
+            self.handleState()
             self.display.tick()
             self.display.draw()
             self.CLOCK.tick(conf.FPS)
+
+    def handleState(self):
+        if self.state == C.STATE_CHANGE:
+            # self.display = self.nextDisplay
+            # self.nextDisplay = None
+            self.display = Display(C.GAME.SCREEN,[])
+            self.state = C.STATE_CHANGED
+            self.stateContinue = True
+        if self.state == C.STATE_CHANGED:
+            self.state == C.STATE_IN_PROGRESS
+            self.display = self.nextDisplay
+
+    def changeDisplay(self,display):
+        self.state = C.STATE_CHANGE
+        self.nextDisplay = display

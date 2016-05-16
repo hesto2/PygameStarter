@@ -36,7 +36,19 @@ class Entity:
         self.checkMouseEvents()
 
     def checkMouseEvents(self):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+        collide = False
+        if hasattr(self,'abs_pos'):
+            mouseX = pygame.mouse.get_pos()[0]
+            mouseY = pygame.mouse.get_pos()[1]
+            if mouseX > self.abs_pos[0] and mouseX < self.abs_pos[0]+self.rect.width and\
+               mouseY > self.abs_pos[1] and mouseY < self.abs_pos[1]+self.rect.height:
+               collide = True
+
+        else:
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                collide = True
+
+        if collide:
             self.onMouseHover()
             if pygame.mouse.get_pressed()[0]:
                 self.onLeftMouseDown()
