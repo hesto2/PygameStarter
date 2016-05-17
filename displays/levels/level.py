@@ -106,3 +106,5 @@ class Level(Display):
         self.paused = False
         self.started = False
         self.taggedPlayer = None
+        self.players = []
+        
