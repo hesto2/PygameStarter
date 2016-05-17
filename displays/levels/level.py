@@ -1,8 +1,8 @@
 from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
-
-
+from entities.players.player import Player
+from pygame.locals import *
 import constants as C
 import random
 import pygame
@@ -22,7 +22,7 @@ class Level(Display):
     paused = False
     started = False
     state = C.STATE_PRE_START
-    time_limit = 1 #In seconds
+    time_limit = 20 #In seconds
     start_time = None
     start_countdown = 0
     taggedPlayer = None
@@ -107,4 +107,34 @@ class Level(Display):
         self.started = False
         self.taggedPlayer = None
         self.players = []
-        
+
+    def initPlayers(self):
+        ball = pygame.image.load('ball.png').convert()
+        masterBall = pygame.image.load('masterBall.png').convert()
+
+        ballrect = ball.get_rect()
+
+        ballrect2 = masterBall.get_rect()
+
+        p1Input = {
+            "keyUp":K_w,
+            "keyDown":K_s,
+            "keyLeft":K_a,
+            "keyRight":K_d,
+            "placeBlock":K_e,
+        }
+        p2Input = {
+            "keyUp":K_UP,
+            "keyDown":K_DOWN,
+            "keyLeft":K_LEFT,
+            "keyRight":K_RIGHT,
+            "placeBlock":K_m,
+        }
+        player1 = Player(ballrect,p1Input,ball,'billums123')
+        player2 = Player(ballrect2,p2Input,masterBall,'hesto2')
+        players = [player1,player2]
+        self.playAreaEntities = []
+        self.hudEntities = []
+        for player in players:
+            self.playAreaEntities.append(player)
+            self.players.append(player)
