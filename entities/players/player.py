@@ -6,10 +6,6 @@ from entities.entity import Entity
 from tools.time import getSecondsElapsed
 import pygame
 class Player(Entity):
-    # top = False
-    # bottom = False
-    # left = False
-    # right = False
 
     def __init__(self,rect,inputConf,image,name):
         self.keyUp = inputConf['keyUp']

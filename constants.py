@@ -13,6 +13,7 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
+DARKGREEN = (7,89,42)
 STATE_PRE_START = 'pre_start'
 STATE_IN_PROGRESS = 'in_progress'
 STATE_FINISHED = 'finished'

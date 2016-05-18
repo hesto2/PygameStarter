@@ -12,7 +12,9 @@ Passable Sides : list
 Example: [SIDE_TOP,SIDE_BOTTOM] will allow an object to move freely between top and bottom
 '''
 class WallStd(Obstacle):
-    def __init__(self,image,position={"x":0,"y":0},passableSides=None,moveableSides=None):
+    def __init__(self,image=None,position={"x":0,"y":0},passableSides=None,moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]):
+        if image == None:
+            image = pygame.image.load('lib/obstacles/wall.jpg').convert()
         rect = image.get_rect()
         Obstacle.__init__(self,rect,image)
         self.type = C.TYPE_WALLSTD

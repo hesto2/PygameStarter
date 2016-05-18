@@ -22,9 +22,9 @@ class Level(Display):
     paused = False
     started = False
     state = C.STATE_PRE_START
-    time_limit = 20 #In seconds
+    time_limit = 60 #In seconds
     start_time = None
-    start_countdown = 0
+    start_countdown = 3
     taggedPlayer = None
     players = []
 

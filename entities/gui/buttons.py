@@ -1,4 +1,5 @@
 from displays.levels.level1 import Level1
+from displays.levels.createLevel import CreateLevel
 from displays.display import Display
 from entities.entity import Entity
 import constants as C
@@ -14,7 +15,7 @@ class PlayButton(Button):
         super().__init__(image.get_rect(),image)
 
     def onMouseHover(self):
-        print('hit')
+        pass
 
     def onLeftMouseDown(self):
         C.GAME.display = Level1()
@@ -37,3 +38,11 @@ class PlayAgainButton(Button):
     def onLeftMouseDown(self):
         from displays.menus.startMenu import StartMenu
         C.GAME.display.reset()
+
+class CreateLevelButton(Button):
+    def __init__(self):
+        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        super().__init__(image.get_rect(),image)
+
+    def onLeftMouseDown(self):
+        C.GAME.display = CreateLevel()
