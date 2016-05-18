@@ -2,7 +2,7 @@ from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
 from entities.players.player import Player
-from entities import obstacles
+from tools.lists import obstacleList
 from displays.levels.level import LevelComponent
 from tools.time import getSecondsElapsed
 from tools.collisions import *
@@ -14,12 +14,12 @@ class CreateLevel(Display):
     playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
 
     def __init__(self):
-        self.playArea.entities = []
+        self.playArea.entities = [obstacleList[1]()]
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
         self.hud = []
         self.state = C.STATE_IN_PROGRESS
-        self.selectableBlocks = [obstacles.wallStd.WallStd]
+        self.selectableBlocks = obstacleList
         self.selectedBlock = 0
         self.selectedItem = self.selectableBlocks[self.selectedBlock]()
         self.pCoolDown = .5
@@ -27,6 +27,9 @@ class CreateLevel(Display):
         self.pCurrentCoolDown = 0
         self.mouseDown = False
         self.validPlacement = True
+        self.keyLeft = K_a
+        self.keyRight = K_d
+        self.keyDown = False
         super().__init__(C.GAME.SCREEN,[])
 
     def tick(self):
@@ -35,6 +38,11 @@ class CreateLevel(Display):
             self.handleState()
 
     def handleInput(self):
+        # Handle Key Presses
+        self.checkKeys()
+        self.selectedItem = self.selectableBlocks[self.selectedBlock]()
+
+        # Handle Mouse Input
         mouseX = pygame.mouse.get_pos()[0]
         mouseY = pygame.mouse.get_pos()[1]
         self.selectedItem.rect.centerx = mouseX
@@ -42,13 +50,14 @@ class CreateLevel(Display):
         self.validPlacement = True
         self.checkSelectedItemBoundary()
         self.checkCollisions()
-
         if pygame.mouse.get_pressed()[0]:
             self.placeSelected()
         else:
             self.mouseDown = False
-        if pygame.mouse.get_pressed()[2]:
-            self.removeSelected()
+            if pygame.mouse.get_pressed()[2]:
+                self.removeSelected()
+
+
 
     def handleState(self):
         pass
@@ -77,7 +86,6 @@ class CreateLevel(Display):
         # Uncomment this line to disable being able to drag with the lmb for placing
         # self.mouseDown = True
         newItem = self.selectableBlocks[self.selectedBlock]()
-        newItem = obstacles.wallStd.WallStd()
         newItem.rect.x = selectedX
         newItem.rect.y = selectedY
         self.playArea.entities.append(newItem)
@@ -120,7 +128,7 @@ class CreateLevel(Display):
 
     def checkCollisions(self):
         selectedX,selectedY = self.getAbsSelected()
-        newItem = obstacles.wallStd.WallStd()
+        newItem = self.selectableBlocks[self.selectedBlock]()
         newItem.rect.x = selectedX
         newItem.rect.y = selectedY
         for entity in self.playArea.entities:
@@ -128,7 +136,25 @@ class CreateLevel(Display):
                 self.validPlacement = False
                 break
 
+    def checkKeys(self):
+        keys = pygame.key.get_pressed()
+        if keys[self.keyLeft]:
+            if self.keyDown == True:
+                return
+            self.keyDown = True
+            self.selectedBlock += 1
+            if self.selectedBlock > len(self.selectableBlocks)-1:
+                self.selectedBlock = 0
+        if keys[self.keyRight]:
+            if self.keyDown == True:
+                return
+            self.keyDown = True
+            self.selectedBlock -= 1
+            if self.selectedBlock < 0:
+                self.selectedBlock = len(self.selectableBlocks)-1
 
+        if keys[self.keyRight]==False and keys[self.keyLeft] == False:
+            self.keyDown = False
 
     def getAbsMouse(self):
         mouseX = pygame.mouse.get_pos()[0]
