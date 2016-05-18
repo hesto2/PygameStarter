@@ -1,6 +1,7 @@
 from displays.display import Display
 from entities.entity import Entity
 from entities.gui import buttons
+from tools.eztext import Input
 import pygame
 import constants as C
 class StartMenu(Display):
@@ -22,5 +23,8 @@ class StartMenu(Display):
         createLevelButton.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         createLevelButton.rect.top = C.GAME.SCREEN.get_rect().centery*.45
 
-        entities = [text,playButton,createLevelButton]
+        textInput = Input(maxlength=20,color=C.WHITE,prompt='TEST: ')
+        textInput.rect.centerx = C.GAME.SCREEN.get_rect().centerx
+        textInput.rect.top = C.GAME.SCREEN.get_rect().centery *1.5
+        entities = [text,playButton,createLevelButton,textInput]
         super().__init__(C.GAME.SCREEN,entities)

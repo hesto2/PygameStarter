@@ -9,6 +9,7 @@ class Entity:
         self.leftMouseDown = False
         self.rightMouseDown = False
         self.id = self.getGuid()
+        self.mouseHover = False
 
     def onCollision(self,collider,side,boundary=None,flags=None):
         pass
@@ -36,6 +37,7 @@ class Entity:
         self.checkMouseEvents()
 
     def checkMouseEvents(self):
+        self.mouseHover = False
         collide = False
         if hasattr(self,'abs_pos'):
             mouseX = pygame.mouse.get_pos()[0]
@@ -49,6 +51,7 @@ class Entity:
                 collide = True
 
         if collide:
+            self.mouseHover = True
             self.onMouseHover()
             if pygame.mouse.get_pressed()[0]:
                 self.onLeftMouseDown()

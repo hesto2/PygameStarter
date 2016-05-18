@@ -15,12 +15,15 @@ class GameMaster:
         self.state = C.STATE_IN_PROGRESS
         self.nextDisplay = None
         self.stateContinue = False
-
+        self.events = []
+        pygame.key.set_repeat()
 
     def run(self):
         while 1:
+            self.events = []
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
+                self.events.append(event)
 
             self.handleState()
             self.display.tick()
