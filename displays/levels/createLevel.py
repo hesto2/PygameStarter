@@ -10,6 +10,8 @@ from pygame.locals import *
 import constants as C
 import random
 import pygame
+
+
 class CreateLevel(Display):
     playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
 
@@ -30,16 +32,30 @@ class CreateLevel(Display):
         self.keyLeft = K_a
         self.keyRight = K_d
         self.keyDown = False
+        self.fileName = ''
         super().__init__(C.GAME.SCREEN,[])
 
     def tick(self):
-        if self.state == C.STATE_IN_PROGRESS:
-            self.handleInput()
-            self.handleState()
+        self.handleState()
+        for entity in self.hud:
+            entity.tick()
+            for subEntity in entity.entities:
+                subEntity.tick()
 
-    def handleInput(self):
+
+    def handlePausedInput(self):
+        keys = pygame.key.get_pressed()
+        if keys[K_ESCAPE]:
+            if self.keyDown:
+                return
+            self.keyDown = True
+            self.unpause()
+        else:
+            self.keyDown = False
+
+    def handleNormalInput(self):
         # Handle Key Presses
-        self.checkKeys()
+        self.checkNormalKeys()
         self.selectedItem = self.selectableBlocks[self.selectedBlock]()
 
         # Handle Mouse Input
@@ -60,7 +76,10 @@ class CreateLevel(Display):
 
 
     def handleState(self):
-        pass
+        if self.state == C.STATE_IN_PROGRESS:
+            self.handleNormalInput()
+        elif self.state == C.STATE_PAUSED:
+            self.handlePausedInput()
 
     def draw(self):
         self.entities = []
@@ -72,6 +91,15 @@ class CreateLevel(Display):
         if self.selectedItem:
             self.drawBorder()
             self.entities.append(self.selectedItem)
+
+        hudItems = []
+        for hudEntity in self.hud:
+            hudEntity.surface.fill(hudEntity.bg_color)
+            for subEntity in hudEntity.entities:
+                hudEntity.surface.blit(subEntity.image,subEntity.rect)
+            hudItems.append(Entity(hudEntity.rect,hudEntity.surface))
+
+        self.entities.extend(hudItems)
         super().draw()
 
     def reset(self):
@@ -136,7 +164,7 @@ class CreateLevel(Display):
                 self.validPlacement = False
                 break
 
-    def checkKeys(self):
+    def checkNormalKeys(self):
         keys = pygame.key.get_pressed()
         if keys[self.keyLeft]:
             if self.keyDown == True:
@@ -153,8 +181,16 @@ class CreateLevel(Display):
             if self.selectedBlock < 0:
                 self.selectedBlock = len(self.selectableBlocks)-1
 
-        if keys[self.keyRight]==False and keys[self.keyLeft] == False:
+        if keys[K_ESCAPE]:
+            if self.keyDown == True:
+                return
+            self.keyDown = True
+            self.pause()
+
+        if keys[self.keyRight]==False and keys[self.keyLeft] == False and keys[K_ESCAPE]==False:
             self.keyDown = False
+
+        # Toggle Pause Menu
 
     def getAbsMouse(self):
         mouseX = pygame.mouse.get_pos()[0]
@@ -169,3 +205,16 @@ class CreateLevel(Display):
         selectedX += self.playArea.rect.x
         selectedY -= self.playArea.rect.y
         return selectedX,selectedY
+
+    def pause(self):
+        from entities.gui import overlays,buttons
+        from displays.menus.pauseCreateLevel import PauseCreateLevel
+        screen = C.GAME.SCREEN.get_rect()
+        overlay = overlays.black()
+        self.hud.append(overlay)
+        self.hud.append(PauseCreateLevel())
+        self.state = C.STATE_PAUSED
+
+    def unpause(self):
+        self.hud = []
+        self.state = C.STATE_IN_PROGRESS
