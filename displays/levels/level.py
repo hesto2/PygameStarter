@@ -30,6 +30,7 @@ class Level(Display):
 
     def __init__(self,screen,playAreaEntities,hudEntities):
 
+        self.keyPause = False
         self.playArea.entities = playAreaEntities
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
@@ -56,14 +57,27 @@ class Level(Display):
 
         self.start_time = pygame.time.get_ticks()
         super().__init__(screen,[])
-
     def togglePause(self):
         pass
 
     def tick(self):
+        keys = pygame.key.get_pressed()
         if self.state == C.STATE_IN_PROGRESS:
-            for entity in self.playArea.entities:
-                entity.tick()
+            if keys[K_ESCAPE] and self.keyPause == False:
+                self.keyPause = True
+                self.pause()
+            else:
+                if keys[K_ESCAPE] == False:self.keyPause = False
+                for entity in self.playArea.entities:
+                    entity.tick()
+
+        if self.state == C.STATE_PAUSED:
+            if keys[K_ESCAPE] and self.keyPause == False:
+                self.keyPause = True
+                self.unpause()
+            else:
+                if keys[K_ESCAPE] == False:self.keyPause = False
+
         if self.state == C.STATE_FINISHED:
             self.endRound()
 
@@ -138,3 +152,16 @@ class Level(Display):
         for player in players:
             self.playAreaEntities.append(player)
             self.players.append(player)
+
+    def pause(self):
+        from entities.gui import overlays,buttons
+        from displays.menus.pauseLevel import PauseLevel
+        screen = C.GAME.SCREEN.get_rect()
+        overlay = overlays.black()
+        self.hud.append(overlay)
+        self.hud.append(PauseLevel())
+        self.state = C.STATE_PAUSED
+
+    def unpause(self):
+        self.hud = self.hud[:-2]
+        self.state = C.STATE_IN_PROGRESS
