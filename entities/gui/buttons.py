@@ -2,6 +2,7 @@ from displays.levels.level1 import Level1
 from displays.levels.createLevel import CreateLevel
 from displays.display import Display
 from entities.entity import Entity
+from displays.levels.customLevel import CustomLevel
 import constants as C
 import pygame
 import time
@@ -111,3 +112,58 @@ class SaveButton(Button):
         print(data)
         with open('%s/%s.json'%(curpath,name),'w') as f:
             f.write(data)
+
+class LoadLevelButton(Button):
+    def __init__(self):
+        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        super().__init__(image.get_rect(),image)
+
+    def onMouseHover(self):
+        pass
+
+    def onLeftMouseDown(self):
+        from displays.menus.selectLevel import SelectLevel
+        C.GAME.display = SelectLevel()
+
+class MainBackButton(Button):
+    def __init__(self):
+        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        super().__init__(image.get_rect(),image)
+
+    def onMouseHover(self):
+        pass
+
+    def onLeftMouseDown(self):
+        from displays.menus.selectLevel import SelectLevel
+        C.GAME.display = StartMenu()
+
+class Title(Button):
+    font = pygame.font.Font(None, 38)
+    abs_pos = (0,0)
+    def __init__(self,text,color=(C.WHITE)):
+        self.text = text
+        self.color = color
+        text = self.font.render(self.text, 1, self.color)
+        textpos = text.get_rect()
+        super().__init__(textpos,text)
+
+    def tick(self):
+        self.image = self.font.render(self.text, 1, self.color)
+        super().tick()
+
+class LevelTile(Button):
+    font = pygame.font.Font(None, 25)
+    def __init__(self,text,data,color=(C.WHITE)):
+        self.text = text
+        self.color = color
+        self.data = data
+        text = self.font.render(self.text, 1, self.color)
+        textpos = text.get_rect()
+        super().__init__(textpos,text)
+
+    def tick(self):
+        self.image = self.font.render(self.text, 1, self.color)
+        super().tick()
+
+    def onLeftMouseDown(self):
+        C.GAME.display = CustomLevel(self.data)

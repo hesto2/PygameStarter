@@ -19,12 +19,15 @@ class StartMenu(Display):
         playButton.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         playButton.rect.top = C.GAME.SCREEN.get_rect().centery * .25
 
+        # Load Level Button
+        loadButton = buttons.LoadLevelButton()
+        loadButton.rect.centerx = C.GAME.SCREEN.get_rect().centerx
+        loadButton.rect.top = C.GAME.SCREEN.get_rect().centery * .55
+
+        # Create Level Button
         createLevelButton = buttons.CreateLevelButton()
         createLevelButton.rect.centerx = C.GAME.SCREEN.get_rect().centerx
-        createLevelButton.rect.top = C.GAME.SCREEN.get_rect().centery*.45
+        createLevelButton.rect.top = C.GAME.SCREEN.get_rect().centery*.85
 
-        textInput = Input(maxlength=20,color=C.WHITE,prompt='TEST: ')
-        textInput.rect.centerx = C.GAME.SCREEN.get_rect().centerx
-        textInput.rect.top = C.GAME.SCREEN.get_rect().centery *1.5
-        entities = [text,playButton,createLevelButton,textInput]
+        entities = [playButton,loadButton,createLevelButton]
         super().__init__(C.GAME.SCREEN,entities)
