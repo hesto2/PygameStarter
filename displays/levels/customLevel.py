@@ -9,13 +9,11 @@ import json
 
 class CustomLevel(Level):
     def __init__(self,data):
-        self.data =data
+        self.data = data
         from tools.lists import loadList
         obstacles = []
         data = json.loads(data)
         for item in data['entities']:
-            print(item)
-            print("XXXX")
             x = item['x']
             y = item['y']
             item = loadList[item['code']](position={"x":x,"y":y})

@@ -22,6 +22,10 @@ class EndRoundMenu(LevelComponent):
                              self.rect.y+playAgain.rect.y)
         self.entities.append(playAgain)
 
-    def tick(self):
-        # align items
-        pass
+        # Main Menu Button
+        menu = buttons.MainMenuButton()
+        menu.rect.centerx = self.rect.width *.5
+        menu.rect.centery = self.rect.height *.7
+        menu.abs_pos = (self.rect.x+menu.rect.x,
+                             self.rect.y+menu.rect.y)
+        self.entities.append(menu)

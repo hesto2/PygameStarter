@@ -18,6 +18,7 @@ class SelectLevel(Display):
 
         for (dirpath, dirnames, filenames) in os.walk(path):
             self.levelNames.extend(filenames)
+            print("Files: ",filenames)
             break
         title = buttons.Title('Select Level')
         title.rect.centerx = C.GAME.SCREEN.get_rect().centerx

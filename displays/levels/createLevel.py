@@ -9,14 +9,28 @@ from pygame.locals import *
 import constants as C
 import random
 import pygame
-
+import json
 
 class CreateLevel(Display):
     playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
 
-    def __init__(self):
+    def __init__(self,data = None,name=''):
         from tools.lists import obstacleList
-        self.playArea.entities = [obstacleList[1]()]
+        self.playArea.entities = []
+
+        self.data = data
+        from tools.lists import loadList
+        if data:
+            data = json.loads(data)
+            for item in data['entities']:
+                print(item)
+                print("XXXX")
+                x = item['x']
+                y = item['y']
+                item = loadList[item['code']](position={"x":x,"y":y})
+                self.playArea.entities.append(item)
+
+
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
         self.hud = []
@@ -32,7 +46,7 @@ class CreateLevel(Display):
         self.keyLeft = K_a
         self.keyRight = K_d
         self.keyDown = False
-        self.fileName = ''
+        self.fileName = name
         super().__init__(C.GAME.SCREEN,[])
 
     def tick(self):
@@ -212,7 +226,7 @@ class CreateLevel(Display):
         screen = C.GAME.SCREEN.get_rect()
         overlay = overlays.black()
         self.hud.append(overlay)
-        self.hud.append(PauseCreateLevel())
+        self.hud.append(PauseCreateLevel(name=self.fileName))
         self.state = C.STATE_PAUSED
 
     def unpause(self):

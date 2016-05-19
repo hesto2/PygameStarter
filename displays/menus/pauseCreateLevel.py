@@ -19,10 +19,10 @@ class PauseCreateLevel(LevelComponent):
     fadeSpeed = 5
     fileName = ''
     fileNameInput = None
-    def __init__(self):
+    def __init__(self,name=''):
         screen = C.GAME.SCREEN.get_rect()
         super().__init__((screen.width*.4,screen.height*.4),entities=[])
-
+        self.fileName = name
         # Buttons
 
         # Reset Button
@@ -52,6 +52,7 @@ class PauseCreateLevel(LevelComponent):
         setattr(textInput,'abs_pos',abs_pos)
         self.entities.append(textInput)
         self.fileNameInput = self.entities[len(self.entities)-1]
+        self.fileNameInput.value = self.fileName
 
         # Save Button
         save = buttons.SaveButton(self.fileNameInput)

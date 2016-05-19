@@ -167,3 +167,6 @@ class LevelTile(Button):
 
     def onLeftMouseDown(self):
         C.GAME.display = CustomLevel(self.data)
+
+    def onRightMouseDown(self):
+        C.GAME.display = CreateLevel(self.data,self.text)
