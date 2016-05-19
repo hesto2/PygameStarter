@@ -2,7 +2,6 @@ from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
 from entities.players.player import Player
-from tools.lists import obstacleList
 from displays.levels.level import LevelComponent
 from tools.time import getSecondsElapsed
 from tools.collisions import *
@@ -16,6 +15,7 @@ class CreateLevel(Display):
     playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
 
     def __init__(self):
+        from tools.lists import obstacleList
         self.playArea.entities = [obstacleList[1]()]
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05

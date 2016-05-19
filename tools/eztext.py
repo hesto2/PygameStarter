@@ -1,3 +1,7 @@
+'''
+THIS CODE COMES FROM THE EZTEXT LIBRARY PUBLISHED ON PYGAME'S WEBSITE
+IT HAS BEEN SLIGHTLY MODIFIED FROM ITS ORIGINAL STATE
+'''
 from pygame.locals import *
 from entities.entity import Entity
 import constants as C
@@ -34,7 +38,7 @@ class Input(Entity):
         self.pause = 0
         self.focus = self.options.focus
         text = self.font.render(self.prompt+self.value, 1, self.color)
-
+        self.rect = text.get_rect()
         super().__init__(text.get_rect(),text)
     def set_pos(self, x, y):
         """ Set the position to x, y """
@@ -170,6 +174,11 @@ class Input(Entity):
             if len(self.value) > self.maxlength and self.maxlength >= 0: self.value = self.value[:-1]
         text = self.font.render(self.prompt+self.value, 1, self.color, C.BLACK)
         self.image = text
+        # self.rect = self.image.get_rect()
+        # self.rect.x = self.rel_pos[0]
+        # print(self.rect.x)
+        # self.rect.x = self.abs_pos[0]
+        # self.rect.y = self.abs_pos[1]
         # Check mouse events
         # print(1)
         super().tick()

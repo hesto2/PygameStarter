@@ -17,6 +17,7 @@ class WallStd(Obstacle):
             image = pygame.image.load('lib/obstacles/wall.jpg').convert()
         rect = image.get_rect()
         Obstacle.__init__(self,rect,image)
+        self.keyCode = 'wm'
         self.type = C.TYPE_WALLSTD
         self.rect.left = position['x']
         self.rect.top = position['y']
