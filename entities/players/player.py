@@ -4,6 +4,7 @@ from tools.collisions import *
 from pygame.locals import *
 from entities.entity import Entity
 from tools.time import getSecondsElapsed
+from entities.players.states.stateNormal import StateNormal
 import pygame
 class Player(Entity):
 
@@ -33,6 +34,7 @@ class Player(Entity):
         self.taggedCooldown = 2
         self.currentCooldown = 0
         self.coolDownStartTick = None
+        self.state = StateNormal(self)
         super().__init__(rect,image)
 
 
@@ -49,6 +51,7 @@ class Player(Entity):
 
 # Collision Detection
     def checkCollision(self,target):
+        self.state.checkCollision(target)
         rect = self.rect
         # if self.checkTop(target) or self.checkBottom(target): self.velocityY = 0
         # if self.checkLeft(target) or self.checkRight(target): self.velocityX = 0
@@ -67,6 +70,7 @@ class Player(Entity):
 
 
     def onCollision(self,collider,side):
+        self.state.onCollision()
         if collider.type == C.TYPE_PLAYER:
             if self.coolDownStartTick != None or collider.coolDownStartTick != None:
                 return
@@ -105,6 +109,8 @@ class Player(Entity):
             self.coolDown()
         if self.placeCoolDownStartTick != None:
             self.placeCoolDown()
+        self.state.tick()
+
     def tick(self):
         self.handleInput()
         self.handleState()
