@@ -18,7 +18,7 @@ class LevelComponent():
 
 class Level(Display):
     players = []
-    def __init__(self,screen,playAreaEntities,hudEntities):
+    def __init__(self,screen,playAreaEntities,hudEntities,starts=None):
         self.playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
         self.hud = []
         self.paused = False
@@ -32,7 +32,7 @@ class Level(Display):
         self.playArea.entities = playAreaEntities
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
-
+        self.gameMode = C.MODE_NORMAL
         # Select Tagged Player
         self.taggedPlayer = random.choice(self.players)
         self.taggedPlayer.tagged()
@@ -46,8 +46,16 @@ class Level(Display):
         timer.rect.centerx = timerBox.rect.width/2
         timer.rect.centery = timerBox.rect.centery
         timerBox.entities.append(timer)
-        self.players[1].rect.right = self.playArea.rect.width
-        self.players[1].rect.bottom = self.playArea.rect.height
+
+        if starts:
+            for player in self.players:
+                start = random.choice(starts)
+                starts.remove(start)
+                player.rect.x = start.rect.x
+                player.rect.y = start.rect.y
+        else:
+            self.players[1].rect.right = self.playArea.rect.width
+            self.players[1].rect.bottom = self.playArea.rect.height
 
 
 

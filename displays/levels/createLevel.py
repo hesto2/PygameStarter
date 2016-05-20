@@ -28,7 +28,7 @@ class CreateLevel(Display):
                 item = loadList[item['code']](position={"x":x,"y":y})
                 self.playArea.entities.append(item)
 
-
+        self.mode = C.MODE_CREATE
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         self.playArea.rect.bottom = C.SCREEN_HEIGHT - C.SCREEN_HEIGHT * .05
         self.hud = []

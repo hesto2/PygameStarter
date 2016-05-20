@@ -12,19 +12,23 @@ class CustomLevel(Level):
         self.data = data
         from tools.lists import loadList
         obstacles = []
+        starts = []
         data = json.loads(data)
         for item in data['entities']:
             x = item['x']
             y = item['y']
             item = loadList[item['code']](position={"x":x,"y":y})
-            obstacles.append(item)
+            if item.type == C.TYPE_PLAYER_START:
+                starts.append(item)
+            else:
+                obstacles.append(item)
 
 
         self.initPlayers()
         for obstacle in obstacles:
             self.playAreaEntities.append(obstacle)
 
-        super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities)
+        super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities,starts)
 
     def reset(self):
         super().clear()

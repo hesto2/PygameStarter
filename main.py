@@ -9,7 +9,10 @@ from displays.levels.level1 import Level1
 from displays.levels.createLevel import CreateLevel
 from gameMaster import GameMaster
 print('Starting Game')
-
+path = 'lib/players/tagged.png'
+icon = pygame.image.load(path)
+pygame.display.set_caption('Tag',path)
+pygame.display.set_icon(icon)
 width = 1200
 height = 800
 size = [width,height]

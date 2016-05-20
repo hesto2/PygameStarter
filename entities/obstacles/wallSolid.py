@@ -11,7 +11,7 @@ class WallSolid(Obstacle):
         rect = image.get_rect()
         Obstacle.__init__(self,rect,image)
         self.keyCode = 'w'
-        self.type = C.TYPE_WALLSTD
+        self.type = C.TYPE_WALL
         self.rect.left = position['x']
         self.rect.top = position['y']
         self.mass = 2
