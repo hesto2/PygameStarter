@@ -53,53 +53,16 @@ class Player(Entity):
     def checkCollision(self,target):
         self.state.checkCollision(target)
         rect = self.rect
-        # if self.checkTop(target) or self.checkBottom(target): self.velocityY = 0
-        # if self.checkLeft(target) or self.checkRight(target): self.velocityX = 0
         if checkTop(self,target): target.onCollision(self,C.SIDE_TOP)
         elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM)
         elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT)
         elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT)
 
-        # top = self.checkTop(target)
-        # bottom =  self.checkBottom(target)
-        # left =  self.checkLeft(target)
-        # right =  self.checkRight(target)
-        # if
-
-        # return {"top":top,"bottom":bottom,"left":left,"right":right}
-
-
     def onCollision(self,collider,side):
-        self.state.onCollision()
-        if collider.type == C.TYPE_PLAYER:
-            if self.coolDownStartTick != None or collider.coolDownStartTick != None:
-                return
-            elif C.GAME.display.taggedPlayer == self:
-                collider.tagged(self)
-
-        moveToEdge(self,collider,side)
-
-        if C.GAME.display.taggedPlayer == collider:
-            self.tagged(collider)
+        self.state.onCollision(collider,side)
 
     def handleInput(self):
-        keys = pygame.key.get_pressed()
-        self.currentXSpeed = 0
-        self.currentYSpeed = 0
-        if keys[self.keyUp]:
-                self.directionY = -1
-                self.currentYSpeed = self.maxYSpeed
-        if keys[self.keyDown]:
-                self.directionY = 1
-                self.currentYSpeed = self.maxYSpeed
-        if keys[self.keyLeft]:
-                self.directionX = -1
-                self.currentXSpeed = self.maxXSpeed
-        if keys[self.keyRight]:
-                self.directionX = 1
-                self.currentXSpeed = self.maxXSpeed
-        if keys[self.keyPlaceBlock]:
-            self.placeBlock()
+        self.state.handleInput()
 
     def handleState(self):
         self.velocityX = self.currentXSpeed * self.directionX

@@ -1,6 +1,7 @@
 from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
+from tools.collisions import *
 from pygame.locals import *
 import constants as C
 import pygame
@@ -17,27 +18,40 @@ class State:
     # Default input
     def handleInput(self):
         keys = pygame.key.get_pressed()
-        self.currentXSpeed = 0
-        self.currentYSpeed = 0
-        if keys[self.keyUp]:
-                self.directionY = -1
-                self.currentYSpeed = self.maxYSpeed
-        if keys[self.keyDown]:
-                self.directionY = 1
-                self.currentYSpeed = self.maxYSpeed
-        if keys[self.keyLeft]:
-                self.directionX = -1
-                self.currentXSpeed = self.maxXSpeed
-        if keys[self.keyRight]:
-                self.directionX = 1
-                self.currentXSpeed = self.maxXSpeed
-        if keys[self.keyPlaceBlock]:
-            self.placeBlock()
+        self.player.currentXSpeed = 0
+        self.player.currentYSpeed = 0
+        if keys[self.player.keyUp]:
+                self.player.directionY = -1
+                self.player.currentYSpeed = self.player.maxYSpeed
+        if keys[self.player.keyDown]:
+                self.player.directionY = 1
+                self.player.currentYSpeed = self.player.maxYSpeed
+        if keys[self.player.keyLeft]:
+                self.player.directionX = -1
+                self.player.currentXSpeed = self.player.maxXSpeed
+        if keys[self.player.keyRight]:
+                self.player.directionX = 1
+                self.player.currentXSpeed = self.player.maxXSpeed
+        if keys[self.player.keyPlaceBlock]:
+            self.player.placeBlock()
 
     #Default on collision behavior
-    def onCollision(self):
-        pass
+    def onCollision(self,collider,side):
+        if collider.type == C.TYPE_PLAYER:
+            if self.player.coolDownStartTick != None or collider.coolDownStartTick != None:
+                return
+            elif C.GAME.display.taggedPlayer == self.player:
+                collider.tagged(self.player)
+
+        moveToEdge(self.player,collider,side)
+
+        if C.GAME.display.taggedPlayer == collider:
+            self.player.tagged(collider)
 
     #Default colliding behavior
     def checkCollision(self,target):
-        pass
+        rect = self.player.rect
+        if checkTop(self.player,target): target.onCollision(self.player,C.SIDE_TOP)
+        elif checkBottom(self.player,target): target.onCollision(self.player,C.SIDE_BOTTOM)
+        elif checkLeft(self.player,target): target.onCollision(self.player,C.SIDE_LEFT)
+        elif checkRight(self.player,target): target.onCollision(self.player,C.SIDE_RIGHT)

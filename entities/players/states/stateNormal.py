@@ -13,4 +13,5 @@ class StateNormal(State):
         super().__init__(player)
 
     def tick(self):
+        super().tick()
         pass
