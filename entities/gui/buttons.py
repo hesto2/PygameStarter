@@ -15,7 +15,7 @@ class Button(Entity):
 
 class PlayButton(Button):
     def __init__(self):
-        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        image = pygame.image.load('lib/gui/buttons/playButton.png')
         super().__init__(image.get_rect(),image)
 
     def onMouseHover(self):
@@ -42,7 +42,7 @@ class PlayAgainButton(Button):
 
 class CreateLevelButton(Button):
     def __init__(self):
-        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        image = pygame.image.load('lib/gui/buttons/createLevel.png')
         super().__init__(image.get_rect(),image)
 
     def onLeftMouseDown(self):
@@ -113,7 +113,7 @@ class SaveButton(Button):
 
 class LoadLevelButton(Button):
     def __init__(self):
-        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        image = pygame.image.load('lib/gui/buttons/selectLevel.png')
         super().__init__(image.get_rect(),image)
 
     def onMouseHover(self):
