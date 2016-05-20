@@ -8,7 +8,6 @@ import pygame
 class Level1(Level):
 
     def __init__(self):
-        screenRect = self.playArea.rect
         obstacles = []
         wallImg = pygame.image.load('lib/obstacles/wall.jpg').convert()
         obstacles.append(WallStd(wallImg,{'x':50,'y':200},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))

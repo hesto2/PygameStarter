@@ -37,5 +37,5 @@ class GameMaster:
             self.state = C.STATE_IN_PROGRESS
 
     def changeDisplay(self,display):
-        self.state = C.STATE_CHANGE
-        self.nextDisplay = display
+        # del self.display
+        self.display = display

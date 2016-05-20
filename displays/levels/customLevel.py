@@ -27,5 +27,5 @@ class CustomLevel(Level):
         super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities)
 
     def reset(self):
-        super().reset()
+        super().clear()
         self.__init__(self.data)

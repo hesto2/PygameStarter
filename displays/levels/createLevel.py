@@ -23,8 +23,6 @@ class CreateLevel(Display):
         if data:
             data = json.loads(data)
             for item in data['entities']:
-                print(item)
-                print("XXXX")
                 x = item['x']
                 y = item['y']
                 item = loadList[item['code']](position={"x":x,"y":y})

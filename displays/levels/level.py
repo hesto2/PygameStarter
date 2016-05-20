@@ -17,19 +17,17 @@ class LevelComponent():
         pass
 
 class Level(Display):
-    playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
-    hud = []
-    paused = False
-    started = False
-    state = C.STATE_PRE_START
-    time_limit = 60 #In seconds
-    start_time = None
-    start_countdown = 3
-    taggedPlayer = None
     players = []
-
     def __init__(self,screen,playAreaEntities,hudEntities):
-
+        self.playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
+        self.hud = []
+        self.paused = False
+        self.started = False
+        self.state = C.STATE_PRE_START
+        self.time_limit = 60 #In seconds
+        self.start_time = None
+        self.start_countdown = 3
+        self.taggedPlayer = None
         self.keyPause = False
         self.playArea.entities = playAreaEntities
         self.playArea.rect.centerx = C.GAME.SCREEN.get_rect().centerx
@@ -62,14 +60,16 @@ class Level(Display):
 
     def tick(self):
         keys = pygame.key.get_pressed()
-        if self.state == C.STATE_IN_PROGRESS:
-            if keys[K_ESCAPE] and self.keyPause == False:
+        if keys[K_ESCAPE] and self.keyPause == False:
+            if self.state != C.STATE_PAUSED:
                 self.keyPause = True
                 self.pause()
-            else:
-                if keys[K_ESCAPE] == False:self.keyPause = False
-                for entity in self.playArea.entities:
-                    entity.tick()
+        else:
+            if keys[K_ESCAPE] == False:self.keyPause = False
+
+        if self.state == C.STATE_IN_PROGRESS:
+            for entity in self.playArea.entities:
+                entity.tick()
 
         if self.state == C.STATE_PAUSED:
             if keys[K_ESCAPE] and self.keyPause == False:
@@ -113,7 +113,7 @@ class Level(Display):
         self.hud.append(EndRoundMenu())
         self.state = C.STATE_END_ROUND
 
-    def reset(self):
+    def clear(self):
         self.playArea.entities = []
         self.hud = []
         self.state = C.STATE_PRE_START
@@ -123,6 +123,7 @@ class Level(Display):
         self.players = []
 
     def initPlayers(self):
+        self.players = []
         ball = pygame.image.load('ball.png').convert()
         masterBall = pygame.image.load('masterBall.png').convert()
 

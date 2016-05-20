@@ -96,7 +96,6 @@ class SaveButton(Button):
     def onLeftMouseDown(self):
         curpath = os.path.abspath(os.curdir)
         curpath  += '/levelData'
-        print(curpath)
         name = self.nameInput.value
         if not name:
             name = str(time.time())
@@ -109,7 +108,6 @@ class SaveButton(Button):
             saveItem = {'code':entity.keyCode,'x':entity.rect.x,'y':entity.rect.y}
             saveItems['entities'].append(saveItem)
         data = json.dumps(saveItems)
-        print(data)
         with open('%s/%s.json'%(curpath,name),'w') as f:
             f.write(data)
 
@@ -135,8 +133,8 @@ class MainBackButton(Button):
 
     def onLeftMouseDown(self):
         from displays.menus.selectLevel import SelectLevel
-        C.GAME.display = StartMenu()
-
+        C.GAME.display.clear()
+        C.GAME.changeDisplay(StartMenu())
 class Title(Button):
     font = pygame.font.Font(None, 38)
     abs_pos = (0,0)

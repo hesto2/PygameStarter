@@ -6,11 +6,11 @@ import pygame
 import constants as C
 import os
 class SelectLevel(Display):
-    levelNames = []
-    levelTiles = []
     resultsPerPage = 10
     currentPage = 0
     def __init__(self):
+        self.levelNames = []
+        self.levelTiles = []
         path = os.path.abspath(os.curdir)
         path  += '/levelData'
         if not os.path.exists(path):
