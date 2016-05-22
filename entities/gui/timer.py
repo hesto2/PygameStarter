@@ -9,15 +9,24 @@ class Timer(Entity):
     def __init__(self):
         text = self.font.render("0:00", 1, (0,255,0))
         textpos = text.get_rect()
-        # self.parentRect = parentRect
-
+        self.pausedStartTick = None
+        # Time in seconds the game has been in progress
+        self.currentLiveTime = 0
+        self.minutes = 0
+        self.seconds = 0
         super().__init__(textpos,text)
 
     def tick(self):
         current_time = pygame.time.get_ticks()
         color = C.BLACK
-        minutes = 0
-        seconds = 0
+
+
+        if C.GAME.display.state == C.STATE_PAUSED and self.pausedStartTick == None:
+            self.pausedStartTick = pygame.time.get_ticks()
+        elif C.GAME.display.state != C.STATE_PAUSED and self.pausedStartTick:
+            C.GAME.display.start_time = C.GAME.display.start_time + (pygame.time.get_ticks()-self.pausedStartTick)
+            self.pausedStartTick = None
+
         if C.GAME.display.state == C.STATE_PRE_START:
             current_time -= C.GAME.display.start_time
             countdown = C.GAME.display.start_countdown
@@ -34,19 +43,25 @@ class Timer(Entity):
             current_time -= start_time
             time_limit = C.GAME.display.time_limit
             timeElapsed = getSecondsElapsed(current_time,time_limit)
+            self.currentLiveTime = timeElapsed
             timeLeft = time_limit - timeElapsed
-            minutes = math.modf(timeLeft/60)[1]
-            seconds = (minutes * 60) - timeLeft
-            seconds *= -1
+            self.minutes = math.modf(timeLeft/60)[1]
+            self.seconds = (self.minutes * 60) - timeLeft
+            self.seconds *= -1
+
+
             if timeLeft <= 15:
                 color = C.RED
                 if timeLeft <= 0:
                     C.GAME.display.state = C.STATE_FINISHED
 
+
+
+
             #Handle players being tagged
             incrementTaggedPlayerTime()
 
-        time = '%i:%02d' % (minutes,seconds)
+        time = '%i:%02d' % (self.minutes,self.seconds)
         self.image = self.font.render(time,1,color)
 
 def incrementTaggedPlayerTime():
