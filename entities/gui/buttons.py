@@ -164,6 +164,8 @@ class LevelTile(Button):
         super().tick()
 
     def onLeftMouseDown(self):
+        if C.GAME.display.mouseDown:
+            return
         C.GAME.display = CustomLevel(self.data)
 
     def onRightMouseDown(self):

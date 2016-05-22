@@ -11,6 +11,7 @@ class SelectLevel(Display):
     def __init__(self):
         self.levelNames = []
         self.levelTiles = []
+        self.mouseDown = True
         path = os.path.abspath(os.curdir)
         path  += '/levelData'
         if not os.path.exists(path):
@@ -18,7 +19,6 @@ class SelectLevel(Display):
 
         for (dirpath, dirnames, filenames) in os.walk(path):
             self.levelNames.extend(filenames)
-            print("Files: ",filenames)
             break
         title = buttons.Title('Select Level')
         title.rect.centerx = C.GAME.SCREEN.get_rect().centerx
@@ -45,3 +45,12 @@ class SelectLevel(Display):
             entities.append(tile)
 
         super().__init__(C.GAME.SCREEN,entities)
+
+    def tick(self):
+        # Handle initial click through so it doesn't click automatically when navigating to menu
+        if pygame.mouse.get_pressed()[0] == False:
+            self.mouseDown = False
+        #     self.mouseDown = True
+        # else:
+        #     self.mouseDown = False
+        super().tick()

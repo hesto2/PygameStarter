@@ -26,7 +26,7 @@ class Level(Display):
         self.state = C.STATE_PRE_START
         self.time_limit = 60 #In seconds
         self.start_time = None
-        self.start_countdown = 0
+        self.start_countdown = 2
         self.taggedPlayer = None
         self.keyPause = False
         self.playArea.entities = playAreaEntities
