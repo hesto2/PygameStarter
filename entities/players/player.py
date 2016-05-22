@@ -30,11 +30,10 @@ class Player(Entity):
         self.currentYSpeed = 0
         self.time_tagged = 0
         self.normalPicture = image
-
+        self.state = StateNormal(self)
         self.taggedCooldown = 2
         self.currentCooldown = 0
         self.coolDownStartTick = None
-        self.state = StateNormal(self)
         super().__init__(rect,image)
 
 

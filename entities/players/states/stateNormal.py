@@ -11,7 +11,3 @@ class StateNormal(State):
         from entities.players.player import Player
         self.name = C.P_STATE_NORMAL
         super().__init__(player)
-
-    def tick(self):
-        super().tick()
-        pass

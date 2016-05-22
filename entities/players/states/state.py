@@ -37,11 +37,16 @@ class State:
 
     #Default on collision behavior
     def onCollision(self,collider,side):
+        from entities.players.states.stateInvincible import StateInvincible
         if collider.type == C.TYPE_PLAYER:
+            # if collider.state.name == C.P_STATE_INVINCIBLE:
+            #     return
+            # These next 2 lines are the ones that need to go once the clock is fixed
             if self.player.coolDownStartTick != None or collider.coolDownStartTick != None:
                 return
             elif C.GAME.display.taggedPlayer == self.player:
                 collider.tagged(self.player)
+                # self.player.state = StateInvincible(2)
 
         moveToEdge(self.player,collider,side)
 
