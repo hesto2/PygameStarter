@@ -31,9 +31,9 @@ class Player(Entity):
         self.time_tagged = 0
         self.normalPicture = image
         self.state = StateNormal(self)
-        self.taggedCooldown = 2
-        self.currentCooldown = 0
-        self.coolDownStartTick = None
+        # self.taggedCooldown = 2
+        # self.currentCooldown = 0
+        # self.coolDownStartTick = None
         super().__init__(rect,image)
 
 
@@ -67,8 +67,8 @@ class Player(Entity):
         self.velocityX = self.currentXSpeed * self.directionX
         self.velocityY = self.currentYSpeed * self.directionY
 
-        if self.coolDownStartTick != None:
-            self.coolDown()
+        # if self.coolDownStartTick != None:
+        #     self.coolDown()
         if self.placeCoolDownStartTick != None:
             self.placeCoolDown()
         self.state.tick()
@@ -80,26 +80,27 @@ class Player(Entity):
         return self.rect
 
     def tagged(self,tagger=None):
-        if self.coolDownStartTick != None:
-            return
+        from entities.players.states.stateInvincible import StateInvincible
+        # if self.coolDownStartTick != None:
+        #     return
         self.image = pygame.image.load('lib/players/tagged.png').convert()
         if tagger:
             tagger.image = tagger.normalPicture
-            tagger.coolDown()
             C.GAME.display.taggedPlayer = self
-
-    def coolDown(self):
-        if self.coolDownStartTick == None:
-            self.coolDownStartTick = pygame.time.get_ticks()
-            self.currentCooldown = self.taggedCooldown
-            self.image.set_alpha(50)
-        else:
-            elapsed = getSecondsElapsed(pygame.time.get_ticks(),self.coolDownStartTick)
-            # self.image.set_alpha(40)
-            self.currentCooldown = self.taggedCooldown - elapsed
-            if self.currentCooldown <= 0:
-                self.coolDownStartTick = None
-                self.image.set_alpha(None)
+            self.state = StateNormal(self)
+            tagger.state = StateInvincible(tagger,2)
+    # def coolDown(self):
+    #     if self.coolDownStartTick == None:
+    #         self.coolDownStartTick = pygame.time.get_ticks()
+    #         self.currentCooldown = self.taggedCooldown
+    #         self.image.set_alpha(50)
+    #     else:
+    #         elapsed = getSecondsElapsed(pygame.time.get_ticks(),self.coolDownStartTick)
+    #         # self.image.set_alpha(40)
+    #         self.currentCooldown = self.taggedCooldown - elapsed
+    #         if self.currentCooldown <= 0:
+    #             self.coolDownStartTick = None
+    #             self.image.set_alpha(None)
 
     def placeCoolDown(self):
         if self.placeCoolDownStartTick == None:

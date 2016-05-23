@@ -2,26 +2,48 @@ from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
 from entities.players.states.state import State
+from entities.players.states.stateNormal import StateNormal
 from pygame.locals import *
 import constants as C
 import pygame
 
 class StateInvincible(State):
-    def __init__(self,player,duration):
+    def __init__(self,player,duration=2):
         self.duration = duration
-        self.taggedCooldown = 2
-        self.currentCooldown = 0
-        self.coolDownStartTick = None
+        self.coolDownStartSecond = None
         from entities.players.player import Player
         self.name = C.P_STATE_INVINCIBLE
         super().__init__(player)
 
     def tick(self):
+        currentSecond = C.GAME.display.timer.currentLiveTime
+        # Fade for the given amount of time for the state
+        if self.coolDownStartSecond == None:
+            print(1)
+            self.coolDownStartSecond = currentSecond
+            self.player.image.set_alpha(50)
+        if currentSecond >= (self.coolDownStartSecond+self.duration):
+            self.player.image.set_alpha(None)
+            print('player:',self.player)
+            self.player.state = StateNormal(self.player)
         super().tick()
-        pass
 
     # Allow players to move through but not obstacles etc.
     def onCollision(self,collider,side):
         if collider.type == C.TYPE_PLAYER:
             return
-        moveToEdge(self.player,collider,side)
+        else:
+            super().onCollision(collider,side)
+
+    # def coolDown(self):
+    #     if self.coolDownStartTick == None:
+    #         self.coolDownStartTick = pygame.time.get_ticks()
+    #         self.currentCooldown = self.taggedCooldown
+    #         self.image.set_alpha(50)
+    #     else:
+    #         elapsed = getSecondsElapsed(pygame.time.get_ticks(),self.coolDownStartTick)
+    #         # self.image.set_alpha(40)
+    #         self.currentCooldown = self.taggedCooldown - elapsed
+    #         if self.currentCooldown <= 0:
+    #             self.coolDownStartTick = None
+    #             self.image.set_alpha(None)
