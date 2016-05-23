@@ -7,7 +7,7 @@ class Timer(Entity):
     font = pygame.font.Font(None, 36)
 
     def __init__(self):
-        text = self.font.render("0:00", 1, (0,255,0))
+        text = self.font.render("0:00", 1, C.WHITE)
         textpos = text.get_rect()
         self.pausedStartTick = None
         # Time in seconds the game has been in progress
@@ -43,11 +43,6 @@ class Timer(Entity):
                 color = C.BLACK
 
         if C.GAME.display.state == C.STATE_IN_PROGRESS:
-            print('''
-
-
-
-            ''')
             start_time = C.GAME.display.start_time
             current_time -= start_time
             time_limit = C.GAME.display.time_limit
