@@ -11,7 +11,7 @@ class LevelComponent():
     def __init__(self,size=(50,50),entities=[],color=(0,0,0)):
         self.surface = pygame.Surface(size)
         self.rect = self.surface.get_rect()
-        self.entities = entities
+        self.entities = entities 
         self.bg_color = color
     def tick(self):
         pass
