@@ -38,18 +38,20 @@ class State:
     #Default on collision behavior
     def onCollision(self,collider,side):
         from entities.players.states.stateInvincible import StateInvincible
+        # Allow players to move through one another
         if collider.type == C.TYPE_PLAYER:
             if collider.state.name == C.P_STATE_INVINCIBLE:
                 return
             elif C.GAME.display.taggedPlayer == self.player:
+                print(1)
                 collider.tagged(self.player)
             elif C.GAME.display.taggedPlayer == collider:
                 self.player.tagged(collider)
+        else:
+            moveToEdge(self.player,collider,side)
 
-        moveToEdge(self.player,collider,side)
-
-        if C.GAME.display.taggedPlayer == collider:
-            self.player.tagged(collider)
+        # if C.GAME.display.taggedPlayer == self.player:
+        #     collider.tagged(self.player)
 
     #Default colliding behavior
     def checkCollision(self,target):

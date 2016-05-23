@@ -19,12 +19,10 @@ class StateInvincible(State):
         currentSecond = C.GAME.display.timer.currentLiveTime
         # Fade for the given amount of time for the state
         if self.coolDownStartSecond == None:
-            print(1)
             self.coolDownStartSecond = currentSecond
             self.player.image.set_alpha(50)
         if currentSecond >= (self.coolDownStartSecond+self.duration):
             self.player.image.set_alpha(None)
-            print('player:',self.player)
             self.player.state = StateNormal(self.player)
         super().tick()
 
