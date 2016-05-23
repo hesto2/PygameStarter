@@ -25,7 +25,6 @@ class Level(Display):
         self.started = False
         self.state = C.STATE_PRE_START
         self.time_limit = 60 #In seconds
-        self.start_time = None
         self.start_countdown = 2
         self.taggedPlayer = None
         self.keyPause = False
@@ -61,8 +60,8 @@ class Level(Display):
 
 
         self.hud.extend([timerBox])
-
         self.start_time = pygame.time.get_ticks()
+
         super().__init__(screen,[])
     def togglePause(self):
         pass

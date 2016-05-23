@@ -20,6 +20,9 @@ class Timer(Entity):
         current_time = pygame.time.get_ticks()
         color = C.BLACK
 
+        # Fix for weird time bug
+        if current_time < C.GAME.display.start_time:
+            C.GAME.display.start_time = current_time
 
         if C.GAME.display.state == C.STATE_PAUSED and self.pausedStartTick == None:
             self.pausedStartTick = pygame.time.get_ticks()
@@ -31,14 +34,20 @@ class Timer(Entity):
             current_time -= C.GAME.display.start_time
             countdown = C.GAME.display.start_countdown
             timeElapsed = getSecondsElapsed(current_time,countdown)
-            seconds = countdown - timeElapsed
+            self.minutes = 0
+            self.seconds = countdown - timeElapsed
             color = C.RED
-            if seconds <= 0:
+            if self.seconds <= 0:
                 C.GAME.display.state = C.STATE_IN_PROGRESS
                 C.GAME.display.start_time = pygame.time.get_ticks()
                 color = C.BLACK
 
         if C.GAME.display.state == C.STATE_IN_PROGRESS:
+            print('''
+
+
+
+            ''')
             start_time = C.GAME.display.start_time
             current_time -= start_time
             time_limit = C.GAME.display.time_limit
