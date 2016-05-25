@@ -21,6 +21,7 @@ class State:
             if self.coolDownStartSecond == None:
                 self.coolDownStartSecond = currentSecond
             if currentSecond >= (self.coolDownStartSecond+self.duration):
+                from entities.players.states.stateNormal import StateNormal
                 self.player.state = StateNormal(self.player)
 
     # Default input
@@ -30,16 +31,16 @@ class State:
         self.player.currentYSpeed = 0
         if keys[self.player.keyUp]:
                 self.player.directionY = -1
-                self.player.currentYSpeed = self.player.maxYSpeed
+                self.player.currentYSpeed = self.player.currentSpeed
         if keys[self.player.keyDown]:
                 self.player.directionY = 1
-                self.player.currentYSpeed = self.player.maxYSpeed
+                self.player.currentYSpeed = self.player.currentSpeed
         if keys[self.player.keyLeft]:
                 self.player.directionX = -1
-                self.player.currentXSpeed = self.player.maxXSpeed
+                self.player.currentXSpeed = self.player.currentSpeed
         if keys[self.player.keyRight]:
                 self.player.directionX = 1
-                self.player.currentXSpeed = self.player.maxXSpeed
+                self.player.currentXSpeed = self.player.currentSpeed
         if keys[self.player.keyPlaceBlock]:
             self.player.placeBlock()
 

@@ -11,3 +11,7 @@ class StateNormal(State):
         from entities.players.player import Player
         self.name = C.P_STATE_NORMAL
         super().__init__(player,duration)
+
+    def tick(self):
+        self.player.currentSpeed = self.player.maxSpeed
+        super().tick()

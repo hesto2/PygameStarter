@@ -24,10 +24,12 @@ class Player(Entity):
         self.velocityY = 0
         self.directionX = 1
         self.directionY = 1
-        self.maxXSpeed = 10
-        self.currentXSpeed = 0
-        self.maxYSpeed = 8
-        self.currentYSpeed = 0
+        # self.maxXSpeed = 10
+        # self.currentXSpeed = 0
+        # self.maxYSpeed = 10
+        # self.currentYSpeed = 0
+        self.maxSpeed = 10
+        self.currentSpeed = self.maxSpeed
         self.time_tagged = 0
         self.normalPicture = image
         self.state = StateNormal(self)

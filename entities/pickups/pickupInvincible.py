@@ -17,6 +17,7 @@ class PickupInvincible(Pickup):
 
     def affectPlayer(self,collider):
         if C.GAME.display.taggedPlayer == collider:
-            pass
+            from entities.players.states.stateFast import StateFast
+            collider.state = StateFast(collider)
         else:
             super().affectPlayer(collider)
