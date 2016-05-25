@@ -7,7 +7,7 @@ import constants as C
 import pygame
 
 class StateNormal(State):
-    def __init__(self,player):
+    def __init__(self,player,duration=0):
         from entities.players.player import Player
         self.name = C.P_STATE_NORMAL
-        super().__init__(player)
+        super().__init__(player,duration)

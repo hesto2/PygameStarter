@@ -2,12 +2,11 @@ from displays.display import Display
 from entities.entity import Entity
 from entities.gui.timer import Timer
 from entities.players.states.state import State
-from entities.players.states.stateNormal import StateNormal
 from pygame.locals import *
 import constants as C
 import pygame
 
-class StateInvincible(State):
+class StateFast(State):
     def __init__(self,player,duration=2):
         from entities.players.player import Player
         self.name = C.P_STATE_INVINCIBLE

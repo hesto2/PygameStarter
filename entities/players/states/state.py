@@ -8,12 +8,20 @@ import pygame
 
 class State:
     name = None
-    def __init__(self,player):
+    def __init__(self,player,duration=0):
         from entities.players.player import Player
         self.player = player
+        self.duration = duration
+        self.coolDownStartSecond = None
 
     def tick(self):
-        pass
+        # Revert state after duration is filled
+        currentSecond = C.GAME.display.timer.currentLiveTime
+        if self.duration > 0:
+            if self.coolDownStartSecond == None:
+                self.coolDownStartSecond = currentSecond
+            if currentSecond >= (self.coolDownStartSecond+self.duration):
+                self.player.state = StateNormal(self.player)
 
     # Default input
     def handleInput(self):
