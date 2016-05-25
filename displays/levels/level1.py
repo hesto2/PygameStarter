@@ -3,6 +3,7 @@ from entities.entity import Entity
 from entities.obstacles.wallStd import WallStd
 from entities.players.player import Player
 from pygame.locals import *
+from entities.pickups.pickupInvincible import PickupInvincible
 import constants as C
 import pygame
 class Level1(Level):
@@ -36,11 +37,12 @@ class Level1(Level):
         obstacles.append(WallStd(wallImg,{'x':332,'y':480},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
         obstacles.append(WallStd(wallImg,{'x':510,'y':360},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
         obstacles.append(WallStd(wallImg,{'x':80,'y':592},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
-
+        obstacles.append(PickupInvincible())
         self.initPlayers()
         for obstacle in obstacles:
             self.playAreaEntities.append(obstacle)
 
+        self.start_countdown = 0
         super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities)
 
     def reset(self):

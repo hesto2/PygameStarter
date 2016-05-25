@@ -1,5 +1,6 @@
 import constants as C
 import pygame
+from tools.collisions import *
 class Entity:
 
     def __init__(self,rect,image):
@@ -64,3 +65,10 @@ class Entity:
         if self.rect.bottom + self.velocityY > playArea.height: self.velocityY = playArea.height - self.rect.bottom
         if self.rect.left + self.velocityX < 0: self.velocityX = 0 - self.rect.left
         if self.rect.right + self.velocityX > playArea.width : self.velocityX = playArea.width - self.rect.right
+
+    def checkCollision(self,target):
+        rect = self.rect
+        if checkTop(self,target): target.onCollision(self,C.SIDE_TOP)
+        elif checkBottom(self,target): target.onCollision(self,C.SIDE_BOTTOM)
+        elif checkLeft(self,target): target.onCollision(self,C.SIDE_LEFT)
+        elif checkRight(self,target): target.onCollision(self,C.SIDE_RIGHT)
