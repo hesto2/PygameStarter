@@ -11,7 +11,7 @@ class LevelComponent():
     def __init__(self,size=(50,50),entities=[],color=(0,0,0)):
         self.surface = pygame.Surface(size)
         self.rect = self.surface.get_rect()
-        self.entities = entities 
+        self.entities = entities
         self.bg_color = color
     def tick(self):
         pass
@@ -25,7 +25,7 @@ class Level(Display):
         self.started = False
         self.state = C.STATE_PRE_START
         self.time_limit = 60 #In seconds
-        self.start_countdown = 2
+        self.start_countdown = 0
         self.taggedPlayer = None
         self.keyPause = False
         self.playArea.entities = playAreaEntities
@@ -35,6 +35,13 @@ class Level(Display):
         # Select Tagged Player
         self.taggedPlayer = random.choice(self.players)
         self.taggedPlayer.tagged()
+
+        # Pickup Config
+        self.pickupSpawned = True
+        self.pickupFrequency = 2
+        self.commonPickupChance = 60
+        self.uncommonPickupChance = 30
+        self.rarePickupChance = 10
 
         # Hud Items
         # Timer
@@ -76,6 +83,8 @@ class Level(Display):
             if keys[K_ESCAPE] == False:self.keyPause = False
 
         if self.state == C.STATE_IN_PROGRESS:
+            # Check if it is time to spawn a random pickup
+            self.handlePickups()
             for entity in self.playArea.entities:
                 entity.tick()
 
@@ -174,3 +183,22 @@ class Level(Display):
     def unpause(self):
         self.hud = self.hud[:-2]
         self.state = C.STATE_IN_PROGRESS
+
+    def handlePickups(self):
+        from tools import lists
+        if self.timer.currentLiveTime % self.pickupFrequency == 0 \
+        and self.timer.currentLiveTime >= self.pickupFrequency:
+            if self.pickupSpawned:
+                return
+            self.pickupSpawned = True
+            randNum = random.randint(0,100)
+            if randNum <= 100-self.commonPickupChance:
+                pickups = lists.commonPickups
+            elif randNum <= 100-self.uncommonPickupChance:
+                pickups = lists.uncommonPickups
+            else:
+                pickups = lists.rarePickups
+            pickup = random.choice(pickups)
+            self.playArea.entities.append(pickup())
+        else:
+            self.pickupSpawned = False

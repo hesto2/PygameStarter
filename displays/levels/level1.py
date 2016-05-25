@@ -37,7 +37,7 @@ class Level1(Level):
         obstacles.append(WallStd(wallImg,{'x':332,'y':480},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
         obstacles.append(WallStd(wallImg,{'x':510,'y':360},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
         obstacles.append(WallStd(wallImg,{'x':80,'y':592},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))
-        obstacles.append(PickupInvincible())
+        # obstacles.append(PickupInvincible())
         self.initPlayers()
         for obstacle in obstacles:
             self.playAreaEntities.append(obstacle)
@@ -46,5 +46,5 @@ class Level1(Level):
         super().__init__(C.GAME.SCREEN,self.playAreaEntities,self.hudEntities)
 
     def reset(self):
-        super().reset()
+        super().clear()
         self.__init__()

@@ -10,10 +10,13 @@ class PickupInvincible(Pickup):
         image = pygame.image.load('lib/pickups/invincible.png').convert()
         statusEffect = StateInvincible
         rarity = C.UNCOMMON
-        ttl = 20
+        ttl = 10
+        duration = 3
         rect = image.get_rect()
-        super().__init__(rect,image,name,rarity,ttl,statusEffect)
+        super().__init__(rect,image,name,rarity,statusEffect,ttl=ttl,duration=duration)
 
-    def tick(self):
-        # print('pickup invincible')
-        pass
+    def affectPlayer(self,collider):
+        if C.GAME.display.taggedPlayer == collider:
+            pass
+        else:
+            super().affectPlayer(collider)

@@ -66,6 +66,14 @@ class Entity:
         if self.rect.left + self.velocityX < 0: self.velocityX = 0 - self.rect.left
         if self.rect.right + self.velocityX > playArea.width : self.velocityX = playArea.width - self.rect.right
 
+    def isInBoundary(self):
+        playArea = C.GAME.display.playArea.rect
+        if self.rect.top < 0: return False
+        if self.rect.bottom > playArea.height: return False
+        if self.rect.left < 0: return False
+        if self.rect.right > playArea.width : return False
+        return True
+
     def checkCollision(self,target):
         rect = self.rect
         if checkTop(self,target): target.onCollision(self,C.SIDE_TOP)
