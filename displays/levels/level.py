@@ -141,13 +141,12 @@ class Level(Display):
 
     def initPlayers(self):
         self.players = []
-        ball = pygame.image.load('ball.png').convert()
-        masterBall = pygame.image.load('masterBall.png').convert()
+        players = []
 
-        ballrect = ball.get_rect()
 
-        ballrect2 = masterBall.get_rect()
 
+        p1Image = pygame.image.load('lib/players/player1.png').convert()
+        p1Rect = p1Image.get_rect()
         p1Input = {
             "keyUp":K_w,
             "keyDown":K_s,
@@ -155,6 +154,11 @@ class Level(Display):
             "keyRight":K_d,
             "placeBlock":K_e,
         }
+        player1 = Player(p1Rect,p1Input,p1Image,'player1')
+        players.append(player1)
+
+        p2Image = pygame.image.load('lib/players/player2.png').convert()
+        p2Rect = p2Image.get_rect()
         p2Input = {
             "keyUp":K_UP,
             "keyDown":K_DOWN,
@@ -162,9 +166,33 @@ class Level(Display):
             "keyRight":K_RIGHT,
             "placeBlock":K_m,
         }
-        player1 = Player(ballrect,p1Input,ball,'billums123')
-        player2 = Player(ballrect2,p2Input,masterBall,'hesto2')
-        players = [player1,player2]
+        player2 = Player(p2Rect,p2Input,p2Image,'player2')
+        players.append(player2)
+
+        p3Image = pygame.image.load('lib/players/player3.png').convert()
+        p3Rect = p3Image.get_rect()
+        p3Input = {
+            "keyUp":K_i,
+            "keyDown":K_k,
+            "keyLeft":K_j,
+            "keyRight":K_l,
+            "placeBlock":K_m,
+        }
+        player3 = Player(p3Rect,p3Input,p3Image,'player3')
+        players.append(player3)
+
+        # p4Image = pygame.image.load('lib/players/player4.png').convert()
+        # p4Rect = masterBall.get_rect()
+        # p4Input = {
+        #     "keyUp":K_i,
+        #     "keyDown":K_k,
+        #     "keyLeft":K_j,
+        #     "keyRight":K_l,
+        #     "placeBlock":K_m,
+        # }
+        # player4 = Player(p4Rect,p4Input,p4Image,'player4')
+        # players.append(player4)
+
         self.playAreaEntities = []
         self.hudEntities = []
         for player in players:
