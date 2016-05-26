@@ -51,7 +51,9 @@ class CreateLevel(Display):
         for entity in self.hud:
             entity.tick()
             for subEntity in entity.entities:
-                print(entity,subEntity)
+                # Fix timer bug: fix this later
+                if issubclass(Timer,type(subEntity)):
+                    continue
                 subEntity.tick()
 
 

@@ -16,12 +16,14 @@ from entities.gui import overlays
 
 
 class PauseCreateLevel(LevelComponent):
-    fadeSpeed = 5
-    fileName = ''
-    fileNameInput = None
     def __init__(self,name=''):
-        screen = C.GAME.SCREEN.get_rect()
-        super().__init__((screen.width*.4,screen.height*.4),entities=[])
+        self.fadeSpeed = 5
+        self.fileName = ''
+        self.fileNameInput = None
+        self.screen = C.GAME.SCREEN.get_rect()
+        screen = self.screen
+        super().__init__((self.screen.width*.4,self.screen.height*.4),entities=[])
+        self.entities = []
         self.fileName = name
         # Buttons
 
