@@ -41,8 +41,8 @@ class State:
         if keys[self.player.keyRight]:
                 self.player.directionX = 1
                 self.player.currentXSpeed = self.player.currentSpeed
-        if keys[self.player.keyPlaceBlock]:
-            self.player.placeBlock()
+        # if keys[self.player.keyPlaceBlock]:
+        #     self.player.placeBlock()
 
     #Default on collision behavior
     def onCollision(self,collider,side):

@@ -227,3 +227,22 @@ class SaveKeysButton(Button):
         data = json.dumps(saveData)
         with open(C.GAME.display.keyFile,'w') as f:
             f.write(data)
+
+class SaveSettingsButton(Button):
+    def  __init__(self):
+        image = pygame.image.load('lib/gui/buttons/save.png')
+        self.settingsFile = C.SETTINGS_FILE
+        super().__init__(image.get_rect(),image)
+
+    def onLeftMouseDown(self):
+        super().onLeftMouseDown()
+        if self.clickable == False:
+            return
+        checkBoxValues = C.GAME.display.checkBoxValues
+        # inputs = json.dumps(C.GAME.display.inputs)
+        saveData = {}
+        for item in checkBoxValues:
+            saveData[item] = checkBoxValues[item]
+        data = json.dumps(saveData)
+        with open(self.settingsFile,'w') as f:
+            f.write(data)

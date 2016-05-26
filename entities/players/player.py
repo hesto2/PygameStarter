@@ -13,7 +13,7 @@ class Player(Entity):
         self.keyDown = inputConf['keyDown']
         self.keyLeft = inputConf['keyLeft']
         self.keyRight = inputConf['keyRight']
-        self.keyPlaceBlock = inputConf['placeBlock']
+        # self.keyPlaceBlock = inputConf['placeBlock']
         self.pCoolDown = 1
         self.placeCoolDownStartTick = None
         self.pCurrentCoolDown = 0

@@ -4,6 +4,7 @@ from entities.gui import buttons
 from entities.gui.checkbox import CheckBox
 from entities.gui.labels import Label
 from tools.eztext import Input
+import json
 import pygame
 import constants as C
 class SettingsMenu(Display):
@@ -11,12 +12,15 @@ class SettingsMenu(Display):
         super().__init__(C.GAME.SCREEN,[])
 
         # Conf Files
-        p1ConfFile = 'settings/p1Keys.conf'
-        p2ConfFile = 'settings/p2Keys.conf'
-        p3ConfFile = 'settings/p3Keys.conf'
-        p4ConfFile = 'settings/p4Keys.conf'
+        p1ConfFile = C.P1_CONF_FILE
+        p2ConfFile = C.P2_CONF_FILE
+        p3ConfFile = C.P3_CONF_FILE
+        p4ConfFile = C.P4_CONF_FILE
 
         entities = []
+        with open(C.SETTINGS_FILE,'r') as f:
+            data = f.read()
+        loadedSettings = json.loads(data)
         centerx = C.GAME.SCREEN.get_rect().centerx
         centery = C.GAME.SCREEN.get_rect().centery
         screenHeight = C.GAME.SCREEN.get_rect().height
@@ -55,7 +59,7 @@ class SettingsMenu(Display):
         # Player3
         p3Label = Label("Player 3:",centerx=screenWidth*.65,centery=playerRowY)
         entities.append(p3Label)
-        p3Check = CheckBox(valueKey='player3',x=p3Label.rect.right+10,centery=playerRowY)
+        p3Check = CheckBox(valueKey='player3',x=p3Label.rect.right+10,checked=loadedSettings['player3'],centery=playerRowY)
         entities.append(p3Check)
         # Config
         p3Config = buttons.KeysButton('Player 3 Keys',p3ConfFile)
@@ -66,13 +70,19 @@ class SettingsMenu(Display):
         # Player4
         p4Label = Label("Player 4:",centerx=screenWidth*.9,centery=playerRowY)
         entities.append(p4Label)
-        p4Check = CheckBox(valueKey='player4',x=p4Label.rect.right+10,centery=playerRowY)
+        p4Check = CheckBox(valueKey='player4',x=p4Label.rect.right+10,checked=loadedSettings['player4'],centery=playerRowY)
         entities.append(p4Check)
         # Config
         p4Config = buttons.KeysButton('Player 4 Keys',p4ConfFile)
         p4Config.rect.centerx = p4Label.rect.centerx
         p4Config.rect.centery = playerRowY + p4Config.rect.height * 1.5
         entities.append(p4Config)
+
+        # Save Button
+        save = buttons.SaveSettingsButton()
+        save.rect.centerx = centerx
+        save.rect.top = screenHeight*.6
+        entities.append(save)
 
         # Back to Main Menu
         mainMenu = buttons.MainBackButton()
@@ -81,6 +91,6 @@ class SettingsMenu(Display):
         entities.append(mainMenu)
 
         self.entities = entities
-        
+
     def tick(self):
         super().tick()

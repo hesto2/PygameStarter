@@ -5,6 +5,7 @@ from entities.players.player import Player
 from pygame.locals import *
 import constants as C
 import random
+import json
 import pygame
 
 class LevelComponent():
@@ -19,6 +20,7 @@ class LevelComponent():
 class Level(Display):
     players = []
     def __init__(self,screen,playAreaEntities,hudEntities,starts=None):
+
         self.playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
         self.hud = []
         self.paused = False
@@ -142,56 +144,74 @@ class Level(Display):
     def initPlayers(self):
         self.players = []
         players = []
+        # Load settings
+        with open(C.SETTINGS_FILE,'r') as f:
+            data = f.read()
+        self.settings = json.loads(data)
 
+        if self.settings['player1']:
+            p1Image = pygame.image.load('lib/players/player1.png').convert()
+            p1Rect = p1Image.get_rect()
+            with open(C.P1_CONF_FILE,'r') as f:
+                data = f.read()
+            p1Conf = json.loads(data)
+            p1Input = {
+                "keyUp":globals()["K_"+p1Conf['up']],
+                "keyDown":globals()["K_"+p1Conf['down']],
+                "keyLeft":globals()["K_"+p1Conf['left']],
+                "keyRight":globals()["K_"+p1Conf['right']],
+                # "placeBlock":K_e,
+            }
+            player1 = Player(p1Rect,p1Input,p1Image,'player1')
+            players.append(player1)
 
+        if self.settings['player2']:
+            p2Image = pygame.image.load('lib/players/player2.png').convert()
+            p2Rect = p2Image.get_rect()
+            with open(C.P2_CONF_FILE,'r') as f:
+                data = f.read()
+            p2Conf = json.loads(data)
+            p2Input = {
+                "keyUp":globals()["K_"+p2Conf['up']],
+                "keyDown":globals()["K_"+p2Conf['down']],
+                "keyLeft":globals()["K_"+p2Conf['left']],
+                "keyRight":globals()["K_"+p2Conf['right']],
+                # "placeBlock":K_e,
+            }
+            player2 = Player(p2Rect,p2Input,p2Image,'player2')
+            players.append(player2)
 
-        p1Image = pygame.image.load('lib/players/player1.png').convert()
-        p1Rect = p1Image.get_rect()
-        p1Input = {
-            "keyUp":K_w,
-            "keyDown":K_s,
-            "keyLeft":K_a,
-            "keyRight":K_d,
-            "placeBlock":K_e,
-        }
-        player1 = Player(p1Rect,p1Input,p1Image,'player1')
-        players.append(player1)
+        if self.settings['player3']:
+            p3Image = pygame.image.load('lib/players/player3.png').convert()
+            p3Rect = p3Image.get_rect()
+            with open(C.P3_CONF_FILE,'r') as f:
+                data = f.read()
+            p3Conf = json.loads(data)
+            p3Input = {
+                "keyUp":globals()["K_"+p3Conf['up']],
+                "keyDown":globals()["K_"+p3Conf['down']],
+                "keyLeft":globals()["K_"+p3Conf['left']],
+                "keyRight":globals()["K_"+p3Conf['right']],
+                # "placeBlock":K_e,
+            }
+            player3 = Player(p3Rect,p3Input,p3Image,'player3')
+            players.append(player3)
 
-        p2Image = pygame.image.load('lib/players/player2.png').convert()
-        p2Rect = p2Image.get_rect()
-        p2Input = {
-            "keyUp":K_UP,
-            "keyDown":K_DOWN,
-            "keyLeft":K_LEFT,
-            "keyRight":K_RIGHT,
-            "placeBlock":K_m,
-        }
-        player2 = Player(p2Rect,p2Input,p2Image,'player2')
-        players.append(player2)
-
-        p3Image = pygame.image.load('lib/players/player3.png').convert()
-        p3Rect = p3Image.get_rect()
-        p3Input = {
-            "keyUp":K_i,
-            "keyDown":K_k,
-            "keyLeft":K_j,
-            "keyRight":K_l,
-            "placeBlock":K_m,
-        }
-        player3 = Player(p3Rect,p3Input,p3Image,'player3')
-        players.append(player3)
-
-        # p4Image = pygame.image.load('lib/players/player4.png').convert()
-        # p4Rect = masterBall.get_rect()
-        # p4Input = {
-        #     "keyUp":K_i,
-        #     "keyDown":K_k,
-        #     "keyLeft":K_j,
-        #     "keyRight":K_l,
-        #     "placeBlock":K_m,
-        # }
-        # player4 = Player(p4Rect,p4Input,p4Image,'player4')
-        # players.append(player4)
+        if self.settings['player4']:
+            p4Image = pygame.image.load('lib/players/player4.png').convert()
+            p4Rect = p4Image.get_rect()
+            with open(C.P4_CONF_FILE,'r') as f:
+                data = f.read()
+            p4Conf = json.loads(data)
+            p4Input = {
+                "keyUp":globals()["K_"+p4Conf['up']],
+                "keyDown":globals()["K_"+p4Conf['down']],
+                "keyLeft":globals()["K_"+p4Conf['left']],
+                "keyRight":globals()["K_"+p4Conf['right']],
+                # "placeBlock":K_e,
+            }
+            player4 = Player(p4Rect,p4Input,p4Image,'player4')
+            players.append(player4)
 
         self.playAreaEntities = []
         self.hudEntities = []
