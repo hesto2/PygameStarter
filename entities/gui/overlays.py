@@ -46,8 +46,8 @@ the point at wich the fade should fade to or from
 #             self.image.set_alpha(setAlpha)
 
 class black(LevelComponent):
-    fadeSpeed = 5
     def __init__(self):
+        self.fadeSpeed = 5
         screen = C.GAME.SCREEN.get_rect()
         super().__init__((screen.width,screen.height))
         self.surface.set_alpha(0)

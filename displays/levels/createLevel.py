@@ -17,7 +17,6 @@ class CreateLevel(Display):
     def __init__(self,data = None,name=''):
         from tools.lists import obstacleList
         self.playArea.entities = []
-
         self.data = data
         from tools.lists import loadList
         if data:
@@ -52,6 +51,7 @@ class CreateLevel(Display):
         for entity in self.hud:
             entity.tick()
             for subEntity in entity.entities:
+                print(entity,subEntity)
                 subEntity.tick()
 
 
