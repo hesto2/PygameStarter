@@ -217,7 +217,13 @@ class SaveKeysButton(Button):
         # inputs = json.dumps(C.GAME.display.inputs)
         saveData = {}
         for item in inputs:
-            saveData[item] = inputs[item].value.lower()
+            value = inputs[item].value
+            if len(value) == 1:
+                value = value.lower()
+            # Don't save if they are missing fields
+            elif len(value) < 1:
+                return
+            saveData[item] = value
         data = json.dumps(saveData)
         with open(C.GAME.display.keyFile,'w') as f:
             f.write(data)

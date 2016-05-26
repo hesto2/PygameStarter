@@ -61,9 +61,11 @@ class EditKeysMenu(Display):
         self.inputs['right'] = rightInput
 
 
-        # loadedInputs = json.loads(self.keyFile)
-        # for item in loadedInputs:
-        #     print(item)
+        with open(self.keyFile,'r') as f:
+            data = f.read()
+        loadedInputs = json.loads(data)
+        for item in loadedInputs:
+            self.inputs[item].value = loadedInputs[item]
 
         # Save Button
         save = buttons.SaveKeysButton()
