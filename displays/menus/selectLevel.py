@@ -6,12 +6,12 @@ import pygame
 import constants as C
 import os
 class SelectLevel(Display):
-    resultsPerPage = 10
+    resultsPerPage = 30
     currentPage = 0
     def __init__(self):
         self.levelNames = []
         self.levelTiles = []
-        self.mouseDown = True
+
         path = os.path.abspath(os.curdir)
         path  += '/levelData'
         if not os.path.exists(path):
@@ -44,13 +44,16 @@ class SelectLevel(Display):
             tile.rect.top = topMargin + (padding+height)*(i+1)
             entities.append(tile)
 
+        # Main Menu Button
+        mainMenu = buttons.MainBackButton()
+        mainMenu.rect.x = 30
+        mainMenu.rect.y = 30
+        entities.append(mainMenu)
         super().__init__(C.GAME.SCREEN,entities)
+        self.mouseDown = True
 
     def tick(self):
         # Handle initial click through so it doesn't click automatically when navigating to menu
         if pygame.mouse.get_pressed()[0] == False:
             self.mouseDown = False
-        #     self.mouseDown = True
-        # else:
-        #     self.mouseDown = False
         super().tick()

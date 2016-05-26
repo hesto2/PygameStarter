@@ -11,7 +11,14 @@ import os
 class Button(Entity):
     def __init__(self,rect,image):
         super().__init__(rect,image)
+        self.clickable = False
 
+    def onLeftMouseDown(self):
+        if C.GAME.display.mouseDown:
+            self.clickable = False
+        else:
+            C.GAME.display.mouseDown = True
+            self.clickable = True
 
 class PlayButton(Button):
     def __init__(self):
@@ -47,6 +54,18 @@ class CreateLevelButton(Button):
 
     def onLeftMouseDown(self):
         C.GAME.display = CreateLevel()
+
+class SettingsButton(Button):
+    def __init__(self):
+        image = pygame.image.load('lib/gui/buttons/settings.png')
+        super().__init__(image.get_rect(),image)
+
+    def onLeftMouseDown(self):
+        super().onLeftMouseDown()
+        if self.clickable == False:
+            return
+        from displays.menus.settingsMenu import SettingsMenu
+        C.GAME.display = SettingsMenu()
 
 class ResetButton(Button):
     font = pygame.font.Font(None, 25)
@@ -125,16 +144,16 @@ class LoadLevelButton(Button):
 
 class MainBackButton(Button):
     def __init__(self):
-        image = pygame.image.load('lib/gui/buttons/play_button.png')
+        image = pygame.image.load('lib/gui/buttons/mainMenu.png')
         super().__init__(image.get_rect(),image)
 
-    def onMouseHover(self):
-        pass
-
     def onLeftMouseDown(self):
-        from displays.menus.selectLevel import SelectLevel
-        C.GAME.display.clear()
-        C.GAME.changeDisplay(StartMenu())
+        super().onLeftMouseDown()
+        if self.clickable == False:
+            return
+        from displays.menus.startMenu import StartMenu
+        C.GAME.display = StartMenu()
+
 class Title(Button):
     font = pygame.font.Font(None, 38)
     abs_pos = (0,0)
@@ -170,3 +189,35 @@ class LevelTile(Button):
 
     def onRightMouseDown(self):
         C.GAME.display = CreateLevel(self.data,self.text)
+
+class KeysButton(Button):
+    def __init__(self,title,keyFile):
+        image = pygame.image.load('lib/gui/buttons/keys.png')
+        self.keyFile = keyFile
+        self.title = title
+        super().__init__(image.get_rect(),image)
+
+    def onLeftMouseDown(self):
+        super().onLeftMouseDown()
+        if self.clickable == False:
+            return
+        from displays.menus.editKeysMenu import EditKeysMenu
+        C.GAME.display = EditKeysMenu(self.title,self.keyFile)
+
+class SaveKeysButton(Button):
+    def  __init__(self):
+        image = pygame.image.load('lib/gui/buttons/save.png')
+        super().__init__(image.get_rect(),image)
+
+    def onLeftMouseDown(self):
+        super().onLeftMouseDown()
+        if self.clickable == False:
+            return
+        inputs = C.GAME.display.inputs
+        # inputs = json.dumps(C.GAME.display.inputs)
+        saveData = {}
+        for item in inputs:
+            saveData[item] = inputs[item].value.lower()
+        data = json.dumps(saveData)
+        with open(C.GAME.display.keyFile,'w') as f:
+            f.write(data)

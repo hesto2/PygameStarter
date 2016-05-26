@@ -4,6 +4,8 @@ class Display:
         self.screen = screen
         self.entities = entities
         self.bg_color = bg_color
+        self.mouseDown = True
+        self.checkBoxValues = {}
 
     def draw(self):
         self.screen.fill(self.bg_color)
@@ -12,5 +14,7 @@ class Display:
         pygame.display.flip()
 
     def tick(self):
+        if pygame.mouse.get_pressed()[0] == False:
+            self.mouseDown = False
         for entity in self.entities:
             entity.tick()

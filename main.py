@@ -20,7 +20,7 @@ black = 0,0,255
 
 screen = pygame.display.set_mode(size)
 C.GAME = GameMaster()
-C.GAME.display = Level1()
+C.GAME.display = StartMenu()
 print('Game Initialized')
 print('Starting Game Loop')
 C.GAME.run()

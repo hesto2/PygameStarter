@@ -7,6 +7,22 @@ from entities.entity import Entity
 import constants as C
 import pygame, string
 
+class InputBox(Entity):
+    def __init__(self,textInput):
+        self.textInput = textInput
+        width = textInput.maxlength*16
+        surface = pygame.Surface((width,textInput.rect.height))
+        rect = surface.get_rect()
+        rect.left = textInput.rect.right-2
+        rect.top = textInput.rect.top
+        surface.fill(textInput.bg)
+        self.textInput.box = self
+        super().__init__(rect,surface)
+
+    def onLeftMouseDown(self):
+        self.textInput.focus = True
+
+
 class ConfigError(KeyError): pass
 
 class Config:
@@ -22,13 +38,14 @@ class Config:
 
 class Input(Entity):
     """ A text input for pygame apps """
-    def __init__(self, **options):
+    def __init__(self,bg=C.BLACK, **options):
         """ Options: x, y, font, color, restricted, maxlength, prompt """
         self.options = Config(options, ['x', '0'], ['y', '0'], ['font','pygame.font.Font(None, 25)'],
                               ['color', '(0,0,0)'], ['restricted',
  '\'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\\\'()*+,-./:;<=>?@[\]^_`{|}~\''],
                               ['maxlength', '-1'], ['prompt', '\'\''],['focus','False'])
         self.x = self.options.x; self.y = self.options.y
+        self.bg = bg
         self.font = self.options.font
         self.color = self.options.color
         self.restricted = self.options.restricted
@@ -39,7 +56,9 @@ class Input(Entity):
         self.focus = self.options.focus
         text = self.font.render(self.prompt+self.value, 1, self.color)
         self.rect = text.get_rect()
+        self.box = None
         super().__init__(text.get_rect(),text)
+
     def set_pos(self, x, y):
         """ Set the position to x, y """
         self.x = x
@@ -70,7 +89,6 @@ class Input(Entity):
                 if event.type == KEYUP:
                     if event.key == K_LSHIFT or event.key == K_RSHIFT: self.shifted = False
                 if event.type == KEYDOWN:
-                    print(event.key)
                     if event.key == K_BACKSPACE: self.value = self.value[:-1]
                     elif event.key == K_LSHIFT or event.key == K_RSHIFT: self.shifted = True
                     elif event.key == K_SPACE: self.value += ' '
@@ -123,6 +141,11 @@ class Input(Entity):
                         elif event.key == K_COMMA and ',' in self.restricted: self.value += ','
                         elif event.key == K_PERIOD and '.' in self.restricted: self.value += '.'
                         elif event.key == K_SLASH and '/' in self.restricted: self.value += '/'
+                        elif event.key == K_UP: self.value = 'UP'
+                        elif event.key == K_DOWN: self.value = 'DOWN'
+                        elif event.key == K_LEFT: self.value = 'LEFT'
+                        elif event.key == K_RIGHT: self.value = 'RIGHT'
+
                     elif self.shifted:
                         if event.key == K_a and 'A' in self.restricted: self.value += 'A'
                         elif event.key == K_b and 'B' in self.restricted: self.value += 'B'
@@ -171,8 +194,8 @@ class Input(Entity):
                         elif event.key == K_COMMA and '<' in self.restricted: self.value += '<'
                         elif event.key == K_PERIOD and '>' in self.restricted: self.value += '>'
                         elif event.key == K_SLASH and '?' in self.restricted: self.value += '?'
-            if len(self.value) > self.maxlength and self.maxlength >= 0: self.value = self.value[:-1]
-        text = self.font.render(self.prompt+self.value, 1, self.color, C.BLACK)
+            if len(self.value) > self.maxlength and self.maxlength >= 0 and self.value not in ['UP','DOWN','LEFT','RIGHT']: self.value = self.value[:-1]
+        text = self.font.render(self.prompt+self.value, 1, self.color, self.bg)
         self.image = text
         # self.rect = self.image.get_rect()
         # self.rect.x = self.rel_pos[0]
@@ -183,6 +206,9 @@ class Input(Entity):
         # print(1)
         super().tick()
         if self.mouseHover == False:
+            if self.box != None:
+                if self.box.mouseHover == True:
+                    return
             if pygame.mouse.get_pressed()[0]:
                 self.focus = False
 
@@ -190,7 +216,7 @@ class Input(Entity):
         self.focus = True
 
     def onRightMouseDown(self):
-        print('value: ',self.value)
+        pass
 
     def onMouseHover(self):
         pass
