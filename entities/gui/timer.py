@@ -60,13 +60,5 @@ class Timer(Entity):
                     C.GAME.display.state = C.STATE_FINISHED
 
 
-
-
-            #Handle players being tagged
-            incrementTaggedPlayerTime()
-
         time = '%i:%02d' % (self.minutes,self.seconds)
         self.image = self.font.render(time,1,color)
-
-def incrementTaggedPlayerTime():
-    C.GAME.display.taggedPlayer.time_tagged +=1

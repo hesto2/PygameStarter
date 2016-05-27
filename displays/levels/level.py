@@ -37,6 +37,7 @@ class Level(Display):
         # Select Tagged Player
         self.taggedPlayer = random.choice(self.players)
         self.taggedPlayer.tagged()
+        self.taggedPlayer.taggedStartSecond = 0
 
         # Pickup Config
         self.pickupSpawned = True
@@ -55,6 +56,8 @@ class Level(Display):
         timer.rect.centery = timerBox.rect.centery
         timerBox.entities.append(timer)
         self.timer = timer
+
+        # Score Box
 
         if starts:
             for player in self.players:
@@ -104,6 +107,7 @@ class Level(Display):
             entity.tick()
             for subEntity in entity.entities:
                 subEntity.tick()
+
 
     def draw(self):
         self.playArea.surface.fill(self.playArea.bg_color)

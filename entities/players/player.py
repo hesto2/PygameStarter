@@ -33,6 +33,9 @@ class Player(Entity):
         self.time_tagged = 0
         self.normalPicture = image
         self.state = StateNormal(self)
+
+        # Tagged info
+        self.taggedStartSecond = None
         super().__init__(rect,image)
 
 
@@ -74,13 +77,17 @@ class Player(Entity):
         self.handleInput()
         self.handleState()
         self.move()
+        if C.GAME.display.taggedPlayer == self and self.taggedStartSecond != None:
+            self.incrementTaggedTimer()
         return self.rect
 
     def tagged(self,tagger=None):
         from entities.players.states.stateInvincible import StateInvincible
-
+        if self.tagged == None:
+            self.taggedStartSecond = C.GAME.display.timer.currentLiveTime
         self.image = pygame.image.load('lib/players/tagged.png').convert()
         if tagger:
+            tagger.taggedStartSecond = None
             tagger.image = tagger.normalPicture
             C.GAME.display.taggedPlayer = self
             self.state = StateNormal(self)
@@ -107,3 +114,10 @@ class Player(Entity):
         with open('test.txt','a') as f:
             f.write("obstacles.append(WallStd(wallImg,{'x':%i,'y':%i},moveableSides=[C.SIDE_RIGHT,C.SIDE_TOP,C.SIDE_LEFT,C.SIDE_BOTTOM]))\n" % (self.rect.x-self.rect.width,self.rect.y-self.rect.height))
         self.placeCoolDown()
+
+    def incrementTaggedTimer(self):
+        # Increment the total time every second
+        currentTime = C.GAME.display.timer.currentLiveTime
+        if self.taggedStartSecond < currentTime:
+            self.time_tagged += (currentTime-self.taggedStartSecond)
+            self.taggedStartSecond = currentTime
