@@ -20,7 +20,9 @@ class LevelComponent():
 class Level(Display):
     players = []
     def __init__(self,screen,playAreaEntities,hudEntities,starts=None):
-
+        from entities.gui.scoreBox import ScoreBox
+        topBarHeight = C.SCREEN_HEIGHT*.045
+        topBarOffset = 2
         self.playArea = LevelComponent((C.SCREEN_WIDTH,C.SCREEN_HEIGHT*.90))
         self.hud = []
         self.paused = False
@@ -48,8 +50,9 @@ class Level(Display):
 
         # Hud Items
         # Timer
-        timerBox = LevelComponent((200,50),color=(255,255,255))
+        timerBox = LevelComponent((200,topBarHeight),color=(255,255,255))
         timerBox.rect.centerx = C.GAME.SCREEN.get_rect().centerx
+        timerBox.rect.y = topBarOffset
         timer = Timer()
 
         timer.rect.centerx = timerBox.rect.width/2
@@ -58,6 +61,10 @@ class Level(Display):
         self.timer = timer
 
         # Score Box
+        scoreBox = ScoreBox((43*4-3,topBarHeight))
+        scoreBox.rect.centerx = C.GAME.SCREEN.get_rect().centerx
+        scoreBox.rect.bottom = C.SCREEN_HEIGHT - topBarOffset
+
 
 
         if starts:
@@ -72,7 +79,7 @@ class Level(Display):
 
 
 
-        self.hud.extend([timerBox])
+        self.hud.extend([timerBox,scoreBox])
         self.start_time = pygame.time.get_ticks()
 
         super().__init__(screen,[])

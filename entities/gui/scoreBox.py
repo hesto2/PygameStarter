@@ -1,22 +1,82 @@
 from entities.entity import Entity
+from displays.levels.level import LevelComponent
 import constants as C
 import pygame
 
-class ScoreBox(Entity):
-    font = pygame.font.Font(None, 36)
-    def __init__(self):
-        size = (200,C.SCREEN_HEIGHT*.90)
+class ScoreBox(LevelComponent):
+    def __init__(self,size):
+        height = size[1]
+        offsetX = 3
 
-        image = pygame.Surface(size)
-        super().__init__(rect,image)
+        first = RankBox(height)
+        first.rect.x = 0
+        second = RankBox(height)
+        second.rect.x = second.rect.width + offsetX
+        third = RankBox(height)
+        third.rect.x = third.rect.width*2 + offsetX * 2
+        fourth = RankBox(height)
+        fourth.rect.x = fourth.rect.width*3 + offsetX * 3
+        entities = [first,second,third,fourth]
+        # entities = [first]
+        super().__init__(size,entities,C.WHITE)
 
     def tick(self):
-        pass
+        # Order players in new array by score
+        orderedPlayers = self.orderPlayers()
+
+        # Assign players to boxes
+        for index, entity in enumerate(self.entities):
+            entity.player = orderedPlayers[index]
+
+
+    def orderPlayers(self):
+        orderedPlayers = []
+        unorderedPlayers = C.GAME.display.players
+        for player in unorderedPlayers:
+            if len(orderedPlayers) == 0:
+                orderedPlayers.append(player)
+                continue
+            for index, p in enumerate(orderedPlayers):
+                if player.time_tagged <= p.time_tagged:
+                    orderedPlayers.insert(index,player)
+                    break
+                elif index == (len(orderedPlayers)-1) and player.time_tagged >= p.time_tagged:
+                    orderedPlayers.append(player)
+                    break
+        return orderedPlayers
 
 class RankBox(Entity):
-    def __init__(self):
-
+    font = pygame.font.Font(None, 18)
+    def __init__(self,height):
+        image = pygame.Surface((40,height))
+        rect = image.get_rect()
+        image.fill(C.RED)
+        self.player = None
         super().__init__(rect,image)
 
     def tick(self):
-        pass
+        playerImage = self.player.normalPicture
+        playerImage = pygame.transform.scale(playerImage,(40,40))
+        playerRect = playerImage.get_rect()
+        playerRect.centerx = self.rect.width/2
+        playerRect.centery = self.rect.height/2
+
+        rankBox = pygame.Surface((38,10))
+        rankBox.fill(C.WHITE)
+        rankBox.set_alpha(200)
+        rankBoxRect = rankBox.get_rect()
+        rankBoxRect.centerx = playerRect.width / 2
+        rankBoxRect.bottom = playerRect.height -2
+
+        score = str(int(self.player.time_tagged))
+        color = C.BLACK
+        if C.GAME.display.taggedPlayer == self.player:
+            color = C.RED
+        scoreText = self.font.render(score, 1, color)
+        scoreTextRect = scoreText.get_rect()
+        scoreTextRect.centerx = rankBoxRect.width/2
+        scoreTextRect.centery = rankBoxRect.height/2
+
+        rankBox.blit(scoreText,scoreTextRect)
+        playerImage.blit(rankBox,rankBoxRect)
+        self.image.blit(playerImage,playerRect)

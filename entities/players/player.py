@@ -77,7 +77,7 @@ class Player(Entity):
         self.handleInput()
         self.handleState()
         self.move()
-        if C.GAME.display.taggedPlayer == self and self.taggedStartSecond != None:
+        if C.GAME.display.taggedPlayer == self:
             self.incrementTaggedTimer()
         return self.rect
 
@@ -118,6 +118,8 @@ class Player(Entity):
     def incrementTaggedTimer(self):
         # Increment the total time every second
         currentTime = C.GAME.display.timer.currentLiveTime
+        if self.taggedStartSecond == None:
+            self.taggedStartSecond = currentTime
         if self.taggedStartSecond < currentTime:
             self.time_tagged += (currentTime-self.taggedStartSecond)
             self.taggedStartSecond = currentTime
