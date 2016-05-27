@@ -4,20 +4,14 @@ import constants as C
 import pygame
 
 class ScoreBox(LevelComponent):
-    def __init__(self,size):
+    def __init__(self,size,numPlayers):
         height = size[1]
         offsetX = 3
-
-        first = RankBox(height)
-        first.rect.x = 0
-        second = RankBox(height)
-        second.rect.x = second.rect.width + offsetX
-        third = RankBox(height)
-        third.rect.x = third.rect.width*2 + offsetX * 2
-        fourth = RankBox(height)
-        fourth.rect.x = fourth.rect.width*3 + offsetX * 3
-        entities = [first,second,third,fourth]
-        # entities = [first]
+        entities = []
+        for i in range(numPlayers):
+            rankBox = RankBox(height)
+            rankBox.rect.x = rankBox.rect.width*i + offsetX*i
+            entities.append(rankBox)
         super().__init__(size,entities,C.WHITE)
 
     def tick(self):

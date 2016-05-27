@@ -61,7 +61,7 @@ class Level(Display):
         self.timer = timer
 
         # Score Box
-        scoreBox = ScoreBox((43*4-3,topBarHeight))
+        scoreBox = ScoreBox((43*len(self.players)-3,topBarHeight),len(self.players))
         scoreBox.rect.centerx = C.GAME.SCREEN.get_rect().centerx
         scoreBox.rect.bottom = C.SCREEN_HEIGHT - topBarOffset
 
