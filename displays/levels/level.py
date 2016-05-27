@@ -28,8 +28,8 @@ class Level(Display):
         self.paused = False
         self.started = False
         self.state = C.STATE_PRE_START
-        self.time_limit = 60 #In seconds
-        self.start_countdown = 0
+        self.time_limit = int(self.settings['gameLength'])
+        self.start_countdown = int(self.settings['countdown'])
         self.taggedPlayer = None
         self.keyPause = False
         self.playArea.entities = playAreaEntities

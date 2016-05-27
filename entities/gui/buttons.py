@@ -239,10 +239,22 @@ class SaveSettingsButton(Button):
         if self.clickable == False:
             return
         checkBoxValues = C.GAME.display.checkBoxValues
+        textInputs = C.GAME.display.textInputs
+        inputValues = {}
+        for key in textInputs:
+            inputValues[key] = textInputs[key].value
+
         # inputs = json.dumps(C.GAME.display.inputs)
         saveData = {}
         for item in checkBoxValues:
             saveData[item] = checkBoxValues[item]
+        for item in inputValues:
+            if item:
+                saveData[item] = inputValues[item]
+            else:
+                # return if they are missing an input value
+                return
+
         data = json.dumps(saveData)
         with open(self.settingsFile,'w') as f:
             f.write(data)

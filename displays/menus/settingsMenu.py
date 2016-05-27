@@ -3,7 +3,7 @@ from entities.entity import Entity
 from entities.gui import buttons
 from entities.gui.checkbox import CheckBox
 from entities.gui.labels import Label
-from tools.eztext import Input
+from tools.eztext import Input,InputBox
 import json
 import pygame
 import constants as C
@@ -16,6 +16,8 @@ class SettingsMenu(Display):
         p2ConfFile = C.P2_CONF_FILE
         p3ConfFile = C.P3_CONF_FILE
         p4ConfFile = C.P4_CONF_FILE
+
+        self.textInputs = {}
 
         entities = []
         with open(C.SETTINGS_FILE,'r') as f:
@@ -77,6 +79,30 @@ class SettingsMenu(Display):
         p4Config.rect.centerx = p4Label.rect.centerx
         p4Config.rect.centery = playerRowY + p4Config.rect.height * 1.5
         entities.append(p4Config)
+
+        # Game seconds
+        restricted = '0123456789'
+        gameSecondsLabel = Label("Game Length (seconds):",centerx=screenWidth*.5,centery=screenHeight*.4)
+        entities.append(gameSecondsLabel)
+        gameSecondsInput = Input(bg=C.WHITE,maxlength=3,color=C.BLACK,restricted=restricted)
+        gameSecondsInput.value = loadedSettings['gameLength']
+        gameSecondsInput.rect.x = gameSecondsLabel.rect.right + 10
+        gameSecondsInput.rect.centery = gameSecondsLabel.rect.centery
+        self.textInputs['gameLength'] = gameSecondsInput
+        entities.append(InputBox(gameSecondsInput))
+        entities.append(gameSecondsInput)
+
+
+        # Countdown seconds
+        countdownSecondsLabel = Label("Countdown (seconds):",centerx=screenWidth*.5,centery=screenHeight*.45)
+        entities.append(countdownSecondsLabel)
+        countdownSecondsInput = Input(bg=C.WHITE,maxlength=2,color=C.BLACK,restricted=restricted)
+        countdownSecondsInput.rect.x = countdownSecondsLabel.rect.right + 10
+        countdownSecondsInput.rect.centery = countdownSecondsLabel.rect.centery
+        countdownSecondsInput.value = loadedSettings['countdown']
+        self.textInputs['countdown'] = countdownSecondsInput
+        entities.append(InputBox(countdownSecondsInput))
+        entities.append(countdownSecondsInput)
 
         # Save Button
         save = buttons.SaveSettingsButton()
