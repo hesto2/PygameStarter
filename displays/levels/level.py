@@ -59,6 +59,7 @@ class Level(Display):
 
         # Score Box
 
+
         if starts:
             for player in self.players:
                 start = random.choice(starts)
